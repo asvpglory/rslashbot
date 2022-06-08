@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "jimp": "^0.16.1"
+  },
+  "name": "rslashbot",
+  "version": "1.0.0",
+  "main": "jimp.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
