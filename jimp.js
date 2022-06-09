@@ -1,12 +1,14 @@
 const Jimp = require('jimp');
-const { title, comment } = require('./text');
+const { title, comment } = require('./dummy');
+require('dotenv').config();
+const fontPath = process.env.FONT_PATH;
 
 async function main() {
     try {
         const image = await Jimp.read('images/reddit.png');
 
         // Render title
-        const titlefont = await Jimp.loadFont('fonts/gaXvlmnaX_0w2gFxHhk7SWDg.ttf.fnt');
+        const titlefont = await Jimp.loadFont(fontPath);
         image.print(titlefont, 65, 40, title, 800);
 
         // Render upvotes
