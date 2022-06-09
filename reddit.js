@@ -1,5 +1,5 @@
 const snoowrap = require('snoowrap');
-const { convertTime } = require('./utilities');
+const { convertTime, shortenNum } = require('./utilities');
 require('dotenv').config();
 
 const r = new snoowrap({
@@ -18,10 +18,10 @@ async function fetchData() {
     // Add all the submission meta data and text to the submission object
     submission['title'] = submissionListing[0].title;
     submission['subreddit'] = submissionListing[0].subreddit_name_prefixed;
-    submission['score'] = submissionListing[0].score;
+    submission['score'] = shortenNum(submissionListing[0].score);
     submission['author'] = submissionListing[0].author.name;
-    submission['commentCount'] = submissionListing[0].num_comments;
-    submission['created'] = submissionListing[0].created_utc;
+    submission['commentCount'] = shortenNum(submissionListing[0].num_comments);
+    submission['created'] = convertTime(submissionListing[0].created_utc);
 
     // Get the actual comments object
     const commentListing = await submissionListing[0].comments;
@@ -39,8 +39,8 @@ async function fetchData() {
         submission.comments.push({
             author: cleanComment.author.name,
             body: cleanComment.body,
-            score: cleanComment.score,
-            created: cleanComment.created_utc
+            score: shortenNum(cleanComment.score),
+            created: convertTime(cleanComment.created_utc)
         });
     }
     return submission;
