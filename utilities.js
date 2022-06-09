@@ -1,3 +1,9 @@
-// Function that turns epoch time into a "__ hours ago" string
+const timeAgo = require('epoch-to-timeago').timeAgo;
 
-// Function that shortens larger numbers (e.g. 20423 --> 20.4k)
+// Converts epoch time into human readable 'time ago' format
+module.exports.convertTime = (created) => {
+    const now = new Date().getTime();
+    const timeSince = timeAgo(created * 1000, now);
+    return timeSince;
+};
+
