@@ -1,5 +1,5 @@
 const Jimp = require('jimp');
-const { title, comment, author } = require('./dummy');
+const { title, comment, author, timeago } = require('./dummy');
 const width = 900;
 
 // Render all metadata and text onto the canvas
@@ -20,6 +20,10 @@ async function render() {
     // Render author text
     const commentAuthorFont = await Jimp.loadFont('fonts/comment-author/6c_zkIxXJO8eXy7WEuZBHWC5.ttf.fnt');
     canvas.print(commentAuthorFont, 75, 25, author);
+
+    // Render timeago text
+    const commentTimeagoFont = await Jimp.loadFont('fonts/comment-timeago/OBQp0Z2pAeeSpZFYXwtGbJbG.ttf.fnt');
+    canvas.print(commentTimeagoFont, 165, 24, timeago);
 
     // Render body text
     // const canvas = await Jimp.read('resources/canvas.png');
