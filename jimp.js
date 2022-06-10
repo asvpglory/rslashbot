@@ -1,6 +1,34 @@
 const Jimp = require('jimp');
-const { title, comment } = require('./dummy');
+const { title, comment, author } = require('./dummy');
 const width = 900;
+
+// Render all metadata and text onto the canvas
+async function render() {
+    // Load canvas and avatar
+    const canvas = await Jimp.read('resources/canvas.png');
+    const trail = await Jimp.read('resources/trail.png');
+    const avatar = await createAvatar();
+
+    // Blit the avatar onto the canvas
+    canvas.blit(avatar, 17, 17);
+    canvas.write('resources/canvas.png');
+
+    // Blit the trail onto the canvas
+    canvas.blit(trail, 35, 65);
+    canvas.write('resources/canvas.png');
+
+    // Render author text
+    const commentAuthorFont = await Jimp.loadFont('fonts/comment-author/6c_zkIxXJO8eXy7WEuZBHWC5.ttf.fnt');
+    canvas.print(commentAuthorFont, 75, 25, author);
+
+    // Render body text
+    // const canvas = await Jimp.read('resources/canvas.png');
+    const commentBodyFont = await Jimp.loadFont('fonts/comment-body/L9FR1o_iJeZA78OxxTFKIIKv.ttf.fnt');
+    canvas.print(commentBodyFont, 75, 57, comment, 790);
+    // canvas.write('resources/canvas.png');
+    canvas.write('desktop/resources/models/canvas2.png');
+    return canvas;
+}
 
 function canvasSize() {
     // Canvas size logic
@@ -39,28 +67,7 @@ async function createAvatar() {
     return avatar;
 }
 
-// Render all metadata and text onto the canvas
-async function render() {
-    // Load canvas and avatar
-    const canvas = await Jimp.read('resources/canvas.png');
-    const trail = await Jimp.read('resources/trail.png');
-    const avatar = await createAvatar();
 
-    // Blit the avatar onto the canvas
-    canvas.blit(avatar, 17, 17);
-    canvas.write('resources/canvas.png');
-
-    // Blit the trail onto the canvas
-    canvas.blit(trail, 35, 65);
-    canvas.write('resources/canvas.png');
-
-    // Render text
-    // const canvas = await Jimp.read('resources/canvas.png');
-    const font = await Jimp.loadFont('fonts/XdeiyxtJqEGlHBlFVZ8PrUQg.ttf.fnt');
-    canvas.print(font, 75, 50, comment, 790);
-    canvas.write('resources/canvas.png');
-    return canvas;
-}
 
 const height = canvasSize();
 createCanvas(height);
