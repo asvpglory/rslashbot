@@ -1,5 +1,0 @@
-// Dummy text file
-
-module.exports.title = "What is your \“The beatings will continue until Morale improves\” work story?";
-
-module.exports.comment = "When I was a kid, we had a guinness book of records lying around that we liked to browse in while bored. There was this one guy in it who held a record for most bikes eaten. No, you did read that right. He ground up a bike and slowly consumed it over I don't know how long a time.";

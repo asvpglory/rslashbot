@@ -3,3 +3,5 @@ node_modules
 fonts
 resources
 extra-resources
+desktop
+dummy.js
