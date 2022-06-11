@@ -1,7 +1,35 @@
 const fs = require('fs');
 const { lightSilver, eerieBlack, oldSilver, jet } = require('./palette');
-const { comment, author, timeago, commentScore, commentActions } = require('./dummy');
 fabric = require('fabric').fabric;
+
+module.exports = (comment, author, timeago, commentScore, commentActions) => {
+    loadFonts();
+    const text = loadText(comment);
+    const textHeight = text.height;
+    const canvas = renderCanvas(textHeight);
+    renderCommentAvatar(canvas);
+    renderText(canvas, text);
+    renderTrail(canvas, textHeight);
+    const authorTextWidth = renderCommentAuthor(canvas, author);
+    renderCommentTimeago(canvas, authorTextWidth, timeago);
+
+    // Bottom row
+    renderUpvote(canvas, textHeight);
+    const scoreWidth = renderCommentScore(canvas, textHeight, commentScore);
+    renderDownvote(canvas, textHeight, scoreWidth);
+    renderCommentActions(canvas, textHeight, scoreWidth, commentActions);
+};
+
+function write(canvas, object) {
+    canvas.add(object);
+    canvas.renderAll();
+    // out = fs.createWriteStream(__dirname + '/desktop/resources/models/helloworld.png');
+    out = fs.createWriteStream(__dirname + `/resources/canvas.png`);
+    const stream = canvas.createPNGStream();
+    stream.on('data', function (chunk) {
+        out.write(chunk);
+    });
+}
 
 function loadFonts() {
     fabric.nodeCanvas.registerFont(__dirname + '/fonts/NotoSans-Medium.ttf', {
@@ -16,7 +44,7 @@ function loadFonts() {
     return null;
 }
 
-function loadText() {
+function loadText(comment) {
     const text = new fabric.Textbox(comment, {
         width: 760,
         top: 64,
@@ -52,7 +80,7 @@ function renderCommentAvatar(canvas) {
     return null;
 }
 
-function renderCommentAuthor(canvas) {
+function renderCommentAuthor(canvas, author) {
     const text = new fabric.Text(author, {
         top: 30,
         left: 67,
@@ -65,7 +93,7 @@ function renderCommentAuthor(canvas) {
     return text.width;
 }
 
-function renderCommentTimeago(canvas, offset) {
+function renderCommentTimeago(canvas, offset, timeago) {
     const text = new fabric.Text(timeago, {
         top: 30,
         left: offset + 73,
@@ -107,7 +135,7 @@ function renderUpvote(canvas, textHeight) {
     });
 }
 
-function renderCommentScore(canvas, textHeight) {
+function renderCommentScore(canvas, textHeight, commentScore) {
     const text = new fabric.Text(commentScore, {
         left: 95,
         top: textHeight + 83,
@@ -134,7 +162,7 @@ function renderDownvote(canvas, textHeight, scoreWidth) {
     });
 }
 
-function renderCommentActions(canvas, textHeight, scoreWidth) {
+function renderCommentActions(canvas, textHeight, scoreWidth, commentActions) {
     const text = new fabric.Text(commentActions, {
         left: scoreWidth + 140,
         top: textHeight + 83,
@@ -146,34 +174,3 @@ function renderCommentActions(canvas, textHeight, scoreWidth) {
     write(canvas, text);
     return null;
 }
-
-function write(canvas, object) {
-    canvas.add(object);
-    canvas.renderAll();
-    out = fs.createWriteStream(__dirname + '/desktop/resources/models/helloworld.png');
-    // out = fs.createWriteStream(__dirname + '/resources/canvas.png');
-    const stream = canvas.createPNGStream();
-    stream.on('data', function (chunk) {
-        out.write(chunk);
-    });
-}
-
-function render() {
-    loadFonts();
-    const text = loadText();
-    const textHeight = text.height;
-    const canvas = renderCanvas(textHeight);
-    renderCommentAvatar(canvas);
-    renderText(canvas, text);
-    renderTrail(canvas, textHeight);
-    const authorTextWidth = renderCommentAuthor(canvas);
-    renderCommentTimeago(canvas, authorTextWidth);
-
-    // Bottom row
-    renderUpvote(canvas, textHeight);
-    const scoreWidth = renderCommentScore(canvas, textHeight);
-    renderDownvote(canvas, textHeight, scoreWidth);
-    renderCommentActions(canvas, textHeight, scoreWidth);
-}
-
-render();
