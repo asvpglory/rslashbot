@@ -1,14 +1,7 @@
 const { postSubreddit, postAuthor, postTimeago, postText, postScore, postCommentAmount, postActions } = require('./dummy');
-
 const renderPost = require('./post');
 
 renderPost(postSubreddit, postAuthor, postTimeago, postText, postScore, postCommentAmount, postActions);
-
-
-
-
-
-
 
 // const renderComment = require('./fabric');
 // const commentNo = 3;

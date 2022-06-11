@@ -1,26 +1,27 @@
 const fs = require('fs');
-const { comment } = require('./dummy');
-const { lightSilver, eerieBlack, oldSilver, jet } = require('./palette');
+const { lightSilver, eerieBlack, oldSilver } = require('./palette');
 fabric = require('fabric').fabric;
 
-module.exports = (subreddit, author, timeago, text, score, commentAmount, actions) => {
+module.exports = (subredditName, postAuthor, postTimeago, postTitle, postScore, postCommentAmount, postActions) => {
     loadFonts();
-    const title = loadTitle(text);
+    const title = loadPostTitle(postTitle);
     const titleHeight = title.height;
+
+    // Main rendering
     const canvas = renderCanvas(titleHeight);
     renderSubredditIcon(canvas);
-    renderSubreddit(canvas, subreddit);
-    renderTitle(canvas, title);
-    const authorTextWidth = renderPostAuthor(canvas, author);
-    renderPostTimeago(canvas, authorTextWidth, timeago);
+    renderSubredditName(canvas, subredditName);
+    renderPostTitle(canvas, title);
+    const postAuthorTextWidth = renderPostAuthor(canvas, postAuthor);
+    renderPostTimeago(canvas, postAuthorTextWidth, postTimeago);
 
-    // Bottom row
-    renderUpvote(canvas, titleHeight);
-    const scoreWidth = renderPostScore(canvas, titleHeight, score);
-    renderDownvote(canvas, titleHeight, scoreWidth);
-    renderCommentIcon(canvas, titleHeight, scoreWidth);
-    renderCommentScore(canvas, titleHeight, scoreWidth, commentAmount);
-    renderPostActions(canvas, titleHeight, scoreWidth, actions);
+    // Rendering bottom row
+    renderPostUpvoteIcon(canvas, titleHeight);
+    const scoreWidth = renderPostScore(canvas, titleHeight, postScore);
+    renderPostDownvoteIcon(canvas, titleHeight, scoreWidth);
+    renderPostCommentIcon(canvas, titleHeight, scoreWidth);
+    renderCommentAmount(canvas, titleHeight, scoreWidth, postCommentAmount);
+    renderPostActions(canvas, titleHeight, scoreWidth, postActions);
 };
 
 function write(canvas, object) {
@@ -39,16 +40,16 @@ function loadFonts() {
         family: 'Noto Sans', weight: 'Medium', style: 'normal'
     });
     fabric.nodeCanvas.registerFont(__dirname + '/fonts/IBMPlexSans-SemiBold.ttf', {
-        family: 'IBMPlexSans', weight: 'SemiBold', style: 'normal'
+        family: 'IBM Plex Sans', weight: 'SemiBold', style: 'normal'
     });
     fabric.nodeCanvas.registerFont(__dirname + '/fonts/IBMPlexSans-Bold.ttf', {
-        family: 'IBMPlexSans', weight: 'Bold', style: 'normal'
+        family: 'IBM Plex Sans', weight: 'Bold', style: 'normal'
     });
     return null;
 }
 
-function loadTitle(text) {
-    const title = new fabric.Textbox(text, {
+function loadPostTitle(postTitle) {
+    const postTitleText = new fabric.Textbox(postTitle, {
         width: 550,
         top: 69,
         left: 17,
@@ -57,13 +58,13 @@ function loadTitle(text) {
         fontFamily: 'IBM Plex Sans',
         fontWeight: 'Bold'
     });
-    return title;
+    return postTitleText;
 }
 
-function renderCanvas(textHeight) {
+function renderCanvas(titleHeight) {
     const canvas = new fabric.StaticCanvas(null, {
         width: 600,
-        height: textHeight + 140,
+        height: titleHeight + 140,
         backgroundColor: eerieBlack
     });
     return canvas;
@@ -72,50 +73,50 @@ function renderCanvas(textHeight) {
 function renderSubredditIcon(canvas) {
     const src = 'file://' + __dirname + '/resources/avatar.png';
     fabric.util.loadImage(src, function (img) {
-        const avatar = new fabric.Image(img);
-        avatar.set({
+        const subredditIcon = new fabric.Image(img);
+        subredditIcon.set({
             left: 17,
             top: 17,
         });
-        avatar.scale(0.15);
-        write(canvas, avatar);
+        subredditIcon.scale(0.15);
+        write(canvas, subredditIcon);
     });
     return null;
 }
 
-function renderTitle(canvas, text) {
-    write(canvas, text);
+function renderPostTitle(canvas, postTitleText) {
+    write(canvas, postTitleText);
     return null;
 }
 
-function renderPostAuthor(canvas, author) {
-    const text = new fabric.Text(author, {
+function renderPostAuthor(canvas, postAuthor) {
+    const postAuthorText = new fabric.Text(postAuthor, {
         top: 40,
         left: 67,
         fill: oldSilver,
         fontSize: 13,
-        fontFamily: "IBMPlexSans",
+        fontFamily: "IBM Plex Sans",
         fontWeight: "SemiBold"
     });
-    write(canvas, text);
-    return text.width;
+    write(canvas, postAuthorText);
+    return postAuthorText.width;
 }
 
-function renderSubreddit(canvas, text) {
-    const subreddit = new fabric.Text(text, {
+function renderSubredditName(canvas, subredditName) {
+    const subredditNameText = new fabric.Text(subredditName, {
         top: 20,
         left: 67,
         fill: lightSilver,
         fontSize: 15,
-        fontFamily: "IBMPlexSans",
+        fontFamily: "IBM Plex Sans",
         fontWeight: "SemiBold"
     });
-    write(canvas, subreddit);
+    write(canvas, subredditNameText);
     return null;
 }
 
-function renderPostTimeago(canvas, offset, timeago) {
-    const text = new fabric.Text(timeago, {
+function renderPostTimeago(canvas, offset, postTimeago) {
+    const postTimeagoText = new fabric.Text(postTimeago, {
         top: 40,
         left: offset + 73,
         fill: oldSilver,
@@ -123,19 +124,19 @@ function renderPostTimeago(canvas, offset, timeago) {
         fontFamily: "Noto Sans",
         fontWeight: "Medium"
     });
-    write(canvas, text);
+    write(canvas, postTimeagoText);
 }
 
-function renderUpvote(canvas, textHeight) {
+function renderPostUpvoteIcon(canvas, textHeight) {
     const src = 'file://' + __dirname + '/resources/upvote.png';
     fabric.util.loadImage(src, function (img) {
-        const upvote = new fabric.Image(img);
-        upvote.set({
+        const postUpvoteIcon = new fabric.Image(img);
+        postUpvoteIcon.set({
             left: 17,
             top: textHeight + 88,
         });
-        upvote.scale(0.025);
-        write(canvas, upvote);
+        postUpvoteIcon.scale(0.025);
+        write(canvas, postUpvoteIcon);
     });
 }
 
@@ -145,61 +146,61 @@ function renderPostScore(canvas, textHeight, postScore) {
         top: textHeight + 93,
         fill: oldSilver,
         fontSize: 15,
-        fontFamily: "IBMPlexSans",
+        fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });
     write(canvas, text);
     return text.width;
 }
 
-function renderDownvote(canvas, titleHeight, scoreWidth) {
+function renderPostDownvoteIcon(canvas, titleHeight, postScoreWidth) {
     const src = 'file://' + __dirname + '/resources/upvote.png';
     fabric.util.loadImage(src, function (img) {
-        const downvote = new fabric.Image(img);
-        downvote.set({
-            left: scoreWidth + 55,
+        const postDownvoteIcon = new fabric.Image(img);
+        postDownvoteIcon.set({
+            left: postScoreWidth + 55,
             top: titleHeight + 88,
         });
-        downvote.scale(0.025);
-        downvote.rotate(180);
-        write(canvas, downvote);
+        postDownvoteIcon.scale(0.025);
+        postDownvoteIcon.rotate(180);
+        write(canvas, postDownvoteIcon);
     });
 }
 
-function renderCommentIcon(canvas, textHeight, scoreWidth) {
+function renderPostCommentIcon(canvas, titleHeight, postScoreWidth) {
     const src = 'file://' + __dirname + '/resources/commenticon.png';
     fabric.util.loadImage(src, function (img) {
-        const upvote = new fabric.Image(img);
-        upvote.set({
-            left: scoreWidth + 90,
-            top: textHeight + 84,
+        const postCommentIcon = new fabric.Image(img);
+        postCommentIcon.set({
+            left: postScoreWidth + 90,
+            top: titleHeight + 84,
         });
-        upvote.scale(0.30);
-        write(canvas, upvote);
+        postCommentIcon.scale(0.30);
+        write(canvas, postCommentIcon);
     });
 }
 
-function renderCommentScore(canvas, textHeight, scoreWidth, commentAmount) {
-    const text = new fabric.Text(commentAmount, {
-        top: textHeight + 93,
-        left: scoreWidth + 130,
+function renderCommentAmount(canvas, titleHeight, postScoreWidth, commentAmount) {
+    const commentAmountText = new fabric.Text(commentAmount, {
+        top: titleHeight + 93,
+        left: postScoreWidth + 130,
         fill: oldSilver,
         fontSize: 15,
-        fontFamily: "IBMPlexSans",
+        fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });
-    write(canvas, text);
+    write(canvas, commentAmountText);
 }
 
-function renderPostActions(canvas, textHeight, scoreWidth, commentActions) {
-    const text = new fabric.Text(commentActions, {
-        left: scoreWidth + 180,
-        top: textHeight + 93,
+function renderPostActions(canvas, titleHeight, postScoreWidth, commentActions) {
+    const postActionsText = new fabric.Text(commentActions, {
+        left: postScoreWidth + 180,
+        top: titleHeight + 93,
         fill: oldSilver,
         fontSize: 15,
-        fontFamily: "IBMPlexSans",
+        fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });
-    write(canvas, text);
+    write(canvas, postActionsText);
     return null;
 }
