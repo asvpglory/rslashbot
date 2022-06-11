@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { comment, author } = require('./dummy');
+const { comment, author, timeago } = require('./dummy');
 fabric = require('fabric').fabric;
 
 function loadFonts() {
@@ -15,15 +15,15 @@ function loadFonts() {
 
 function loadText() {
     const text = new fabric.Textbox(comment, {
-        width: 720,
-        top: 57,
-        left: 75,
+        width: 760,
+        top: 64,
+        left: 67,
         fill: '#D7DADC',
         fontSize: 18,
-        fontFamily: 'NotoSans',
+        fontFamily: 'Noto Sans',
         fontWeight: 'Medium',
     });
-    console.log(text.height);
+    // console.log(text.height);
     return text;
 }
 
@@ -52,15 +52,28 @@ function renderAvatar(canvas) {
 
 function renderCommentAuthor(canvas) {
     const text = new fabric.Text(author, {
-        top: 25,
-        left: 75,
+        top: 30,
+        left: 67,
         fill: "#D7DADC",
-        fontSize: 15,
+        fontSize: 16,
         fontFamily: "IBMPlexSans",
         fontWeight: "SemiBold"
     });
     write(canvas, text);
-    return null;
+    console.log(text.width);
+    return text.width;
+}
+
+function renderCommentTimeago(canvas, offset) {
+    const text = new fabric.Text(timeago, {
+        top: 30,
+        left: offset + 73,
+        fill: "#818384",
+        fontSize: 15,
+        fontFamily: "Noto Sans",
+        fontWeight: "Medium"
+    });
+    write(canvas, text);
 }
 
 function renderText(canvas, text) {
@@ -73,7 +86,7 @@ function renderTrail(canvas, height) {
         width: 2,
         height: height,
         fill: "#343536",
-        top: 70,
+        top: 65,
         left: 35
     });
     write(canvas, trail);
@@ -98,4 +111,5 @@ const canvas = renderCanvas(textHeight);
 renderAvatar(canvas);
 renderText(canvas, text);
 renderTrail(canvas, textHeight);
-renderCommentAuthor(canvas);
+const authorTextWidth = renderCommentAuthor(canvas);
+renderCommentTimeago(canvas, authorTextWidth);
