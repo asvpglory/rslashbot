@@ -2,29 +2,29 @@ const fs = require('fs');
 const { lightSilver, eerieBlack, oldSilver, jet } = require('./palette');
 fabric = require('fabric').fabric;
 
-module.exports = (comment, author, timeago, commentScore, commentActions) => {
+module.exports = (comment, author, timeago, commentScore, commentActions, commentIndex) => {
     loadFonts();
     const text = loadText(comment);
     const textHeight = text.height;
     const canvas = renderCanvas(textHeight);
-    renderCommentAvatar(canvas);
-    renderText(canvas, text);
-    renderTrail(canvas, textHeight);
-    const authorTextWidth = renderCommentAuthor(canvas, author);
-    renderCommentTimeago(canvas, authorTextWidth, timeago);
+    renderCommentAvatar(canvas, commentIndex);
+    renderText(canvas, text, commentIndex);
+    renderTrail(canvas, textHeight, commentIndex);
+    const authorTextWidth = renderCommentAuthor(canvas, author, commentIndex);
+    renderCommentTimeago(canvas, authorTextWidth, timeago, commentIndex);
 
     // Bottom row
-    renderUpvote(canvas, textHeight);
-    const scoreWidth = renderCommentScore(canvas, textHeight, commentScore);
-    renderDownvote(canvas, textHeight, scoreWidth);
-    renderCommentActions(canvas, textHeight, scoreWidth, commentActions);
+    renderUpvote(canvas, textHeight, commentIndex);
+    const scoreWidth = renderCommentScore(canvas, textHeight, commentScore, commentIndex);
+    renderDownvote(canvas, textHeight, scoreWidth, commentIndex);
+    renderCommentActions(canvas, textHeight, scoreWidth, commentActions, commentIndex);
 };
 
-function write(canvas, object) {
+function write(canvas, object, commentIndex) {
     canvas.add(object);
     canvas.renderAll();
     // out = fs.createWriteStream(__dirname + '/desktop/resources/models/helloworld.png');
-    out = fs.createWriteStream(__dirname + `/resources/canvas.png`);
+    out = fs.createWriteStream(__dirname + `/resources/comment${commentIndex}.png`);
     const stream = canvas.createPNGStream();
     stream.on('data', function (chunk) {
         out.write(chunk);
@@ -66,7 +66,7 @@ function renderCanvas(textHeight) {
     return canvas;
 }
 
-function renderCommentAvatar(canvas) {
+function renderCommentAvatar(canvas, commentIndex) {
     const src = 'file://' + __dirname + '/resources/avatar.png';
     fabric.util.loadImage(src, function (img) {
         const avatar = new fabric.Image(img);
@@ -75,12 +75,12 @@ function renderCommentAvatar(canvas) {
             top: 17,
         });
         avatar.scale(0.15);
-        write(canvas, avatar);
+        write(canvas, avatar, commentIndex);
     });
     return null;
 }
 
-function renderCommentAuthor(canvas, author) {
+function renderCommentAuthor(canvas, author, commentIndex) {
     const text = new fabric.Text(author, {
         top: 30,
         left: 67,
@@ -89,11 +89,11 @@ function renderCommentAuthor(canvas, author) {
         fontFamily: "IBMPlexSans",
         fontWeight: "SemiBold"
     });
-    write(canvas, text);
+    write(canvas, text, commentIndex);
     return text.width;
 }
 
-function renderCommentTimeago(canvas, offset, timeago) {
+function renderCommentTimeago(canvas, offset, timeago, commentIndex) {
     const text = new fabric.Text(timeago, {
         top: 30,
         left: offset + 73,
@@ -102,15 +102,15 @@ function renderCommentTimeago(canvas, offset, timeago) {
         fontFamily: "Noto Sans",
         fontWeight: "Medium"
     });
-    write(canvas, text);
+    write(canvas, text, commentIndex);
 }
 
-function renderText(canvas, text) {
-    write(canvas, text);
+function renderText(canvas, text, commentIndex) {
+    write(canvas, text, commentIndex);
     return null;
 }
 
-function renderTrail(canvas, height) {
+function renderTrail(canvas, height, commentIndex) {
     const trail = new fabric.Rect({
         width: 2,
         height: height,
@@ -118,11 +118,11 @@ function renderTrail(canvas, height) {
         top: 65,
         left: 35
     });
-    write(canvas, trail);
+    write(canvas, trail, commentIndex);
     return null;
 }
 
-function renderUpvote(canvas, textHeight) {
+function renderUpvote(canvas, textHeight, commentIndex) {
     const src = 'file://' + __dirname + '/resources/upvote.png';
     fabric.util.loadImage(src, function (img) {
         const upvote = new fabric.Image(img);
@@ -131,11 +131,11 @@ function renderUpvote(canvas, textHeight) {
             top: textHeight + 78,
         });
         upvote.scale(0.025);
-        write(canvas, upvote);
+        write(canvas, upvote, commentIndex);
     });
 }
 
-function renderCommentScore(canvas, textHeight, commentScore) {
+function renderCommentScore(canvas, textHeight, commentScore, commentIndex) {
     const text = new fabric.Text(commentScore, {
         left: 95,
         top: textHeight + 83,
@@ -144,11 +144,11 @@ function renderCommentScore(canvas, textHeight, commentScore) {
         fontFamily: "IBMPlexSans",
         fontWeight: "Bold"
     });
-    write(canvas, text);
+    write(canvas, text, commentIndex);
     return text.width;
 }
 
-function renderDownvote(canvas, textHeight, scoreWidth) {
+function renderDownvote(canvas, textHeight, scoreWidth, commentIndex) {
     const src = 'file://' + __dirname + '/resources/upvote.png';
     fabric.util.loadImage(src, function (img) {
         const downvote = new fabric.Image(img);
@@ -158,11 +158,11 @@ function renderDownvote(canvas, textHeight, scoreWidth) {
         });
         downvote.scale(0.025);
         downvote.rotate(180);
-        write(canvas, downvote);
+        write(canvas, downvote, commentIndex);
     });
 }
 
-function renderCommentActions(canvas, textHeight, scoreWidth, commentActions) {
+function renderCommentActions(canvas, textHeight, scoreWidth, commentActions, commentIndex) {
     const text = new fabric.Text(commentActions, {
         left: scoreWidth + 140,
         top: textHeight + 83,
@@ -171,6 +171,6 @@ function renderCommentActions(canvas, textHeight, scoreWidth, commentActions) {
         fontFamily: "IBMPlexSans",
         fontWeight: "Bold"
     });
-    write(canvas, text);
+    write(canvas, text, commentIndex);
     return null;
 }
