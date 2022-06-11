@@ -27,8 +27,8 @@ module.exports = (subredditName, postAuthor, postTimeago, postTitle, postScore, 
 function write(canvas, object) {
     canvas.add(object);
     canvas.renderAll();
-    // out = fs.createWriteStream(__dirname + '/desktop/resources/models/submission.png');
-    out = fs.createWriteStream(__dirname + `/resources/submission.png`);
+    // out = fs.createWriteStream(__dirname + '/desktop/output/models/submission.png');
+    out = fs.createWriteStream(__dirname + `/output/submission.png`);
     const stream = canvas.createPNGStream();
     stream.on('data', function (chunk) {
         out.write(chunk);

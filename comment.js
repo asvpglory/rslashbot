@@ -26,7 +26,7 @@ function write(canvas, object, commentIndex) {
     canvas.add(object);
     canvas.renderAll();
     // out = fs.createWriteStream(__dirname + '/desktop/resources/models/helloworld.png');
-    out = fs.createWriteStream(__dirname + `/resources/comment${commentIndex}.png`);
+    out = fs.createWriteStream(__dirname + `/output/comment${commentIndex}.png`);
     const stream = canvas.createPNGStream();
     stream.on('data', function (chunk) {
         out.write(chunk);
