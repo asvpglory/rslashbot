@@ -1,13 +1,17 @@
 const fs = require('fs');
-const { comment } = require('./dummy');
+const { comment, author } = require('./dummy');
 fabric = require('fabric').fabric;
 
 function loadFonts() {
-    fabric.nodeCanvas.registerFont(__dirname + '/NotoSans-Medium.ttf', {
-        family: 'Noto Sans', weight: 'medium', style: 'normal'
+    fabric.nodeCanvas.registerFont(__dirname + '/fonts/NotoSans-Medium.ttf', {
+        family: 'Noto Sans', weight: 'Medium', style: 'normal'
+    });
+    fabric.nodeCanvas.registerFont(__dirname + '/fonts/IBMPlexSans-SemiBold.ttf', {
+        family: 'IBMPlexSans', weight: 'SemiBold', style: 'normal'
     });
     return null;
 }
+
 
 function loadText() {
     const text = new fabric.Textbox(comment, {
@@ -17,7 +21,7 @@ function loadText() {
         fill: '#D7DADC',
         fontSize: 18,
         fontFamily: 'NotoSans',
-        fontWeight: 'medium',
+        fontWeight: 'Medium',
     });
     console.log(text.height);
     return text;
@@ -33,7 +37,7 @@ function renderCanvas(height) {
 }
 
 function renderAvatar(canvas) {
-    const src = 'file://' + __dirname + '/avatar.png';
+    const src = 'file://' + __dirname + '/resources/avatar.png';
     fabric.util.loadImage(src, function (img) {
         const avatar = new fabric.Image(img);
         avatar.set({
@@ -43,6 +47,19 @@ function renderAvatar(canvas) {
         avatar.scale(0.15);
         write(canvas, avatar);
     });
+    return null;
+}
+
+function renderCommentAuthor(canvas) {
+    const text = new fabric.Text(author, {
+        top: 25,
+        left: 75,
+        fill: "#D7DADC",
+        fontSize: 15,
+        fontFamily: "IBMPlexSans",
+        fontWeight: "SemiBold"
+    });
+    write(canvas, text);
     return null;
 }
 
@@ -67,7 +84,7 @@ function write(canvas, object) {
     canvas.add(object);
     canvas.renderAll();
     out = fs.createWriteStream(__dirname + '/desktop/resources/models/helloworld.png');
-    // out = fs.createWriteStream(__dirname + '/helloworld.png');
+    // out = fs.createWriteStream(__dirname + '/resources/canvas.png');
     const stream = canvas.createPNGStream();
     stream.on('data', function (chunk) {
         out.write(chunk);
@@ -81,3 +98,4 @@ const canvas = renderCanvas(textHeight);
 renderAvatar(canvas);
 renderText(canvas, text);
 renderTrail(canvas, textHeight);
+renderCommentAuthor(canvas);
