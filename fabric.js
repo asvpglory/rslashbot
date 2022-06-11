@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { lightSilver, eerieBlack, oldSilver, jet } = require('./palette');
 const { comment, author, timeago } = require('./dummy');
 fabric = require('fabric').fabric;
 
@@ -12,26 +13,24 @@ function loadFonts() {
     return null;
 }
 
-
 function loadText() {
     const text = new fabric.Textbox(comment, {
         width: 760,
         top: 64,
         left: 67,
-        fill: '#D7DADC',
+        fill: lightSilver,
         fontSize: 18,
         fontFamily: 'Noto Sans',
-        fontWeight: 'Medium',
+        fontWeight: 'Medium'
     });
-    // console.log(text.height);
     return text;
 }
 
-function renderCanvas(height) {
+function renderCanvas(textHeight) {
     const canvas = new fabric.StaticCanvas(null, {
         width: 900,
-        height: height + 125,
-        backgroundColor: "#1A1A1B"
+        height: textHeight + 125,
+        backgroundColor: eerieBlack
     });
     return canvas;
 }
@@ -54,13 +53,12 @@ function renderCommentAuthor(canvas) {
     const text = new fabric.Text(author, {
         top: 30,
         left: 67,
-        fill: "#D7DADC",
+        fill: lightSilver,
         fontSize: 16,
         fontFamily: "IBMPlexSans",
         fontWeight: "SemiBold"
     });
     write(canvas, text);
-    console.log(text.width);
     return text.width;
 }
 
@@ -68,7 +66,7 @@ function renderCommentTimeago(canvas, offset) {
     const text = new fabric.Text(timeago, {
         top: 30,
         left: offset + 73,
-        fill: "#818384",
+        fill: oldSilver,
         fontSize: 15,
         fontFamily: "Noto Sans",
         fontWeight: "Medium"
@@ -85,7 +83,7 @@ function renderTrail(canvas, height) {
     const trail = new fabric.Rect({
         width: 2,
         height: height,
-        fill: "#343536",
+        fill: jet,
         top: 65,
         left: 35
     });
@@ -96,20 +94,24 @@ function renderTrail(canvas, height) {
 function write(canvas, object) {
     canvas.add(object);
     canvas.renderAll();
-    out = fs.createWriteStream(__dirname + '/desktop/resources/models/helloworld.png');
-    // out = fs.createWriteStream(__dirname + '/resources/canvas.png');
+    // out = fs.createWriteStream(__dirname + '/desktop/resources/models/helloworld.png');
+    out = fs.createWriteStream(__dirname + '/resources/canvas.png');
     const stream = canvas.createPNGStream();
     stream.on('data', function (chunk) {
         out.write(chunk);
     });
 }
 
-loadFonts();
-const text = loadText();
-const textHeight = text.height;
-const canvas = renderCanvas(textHeight);
-renderAvatar(canvas);
-renderText(canvas, text);
-renderTrail(canvas, textHeight);
-const authorTextWidth = renderCommentAuthor(canvas);
-renderCommentTimeago(canvas, authorTextWidth);
+function render() {
+    loadFonts();
+    const text = loadText();
+    const textHeight = text.height;
+    const canvas = renderCanvas(textHeight);
+    renderAvatar(canvas);
+    renderText(canvas, text);
+    renderTrail(canvas, textHeight);
+    const authorTextWidth = renderCommentAuthor(canvas);
+    renderCommentTimeago(canvas, authorTextWidth);
+}
+
+render();
