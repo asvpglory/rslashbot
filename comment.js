@@ -56,7 +56,6 @@ function loadCommentText(comment) {
         fontFamily: 'Noto Sans',
         fontWeight: 'Medium'
     });
-    console.log('b');
     return commentText;
 }
 

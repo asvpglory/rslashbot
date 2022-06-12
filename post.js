@@ -71,18 +71,19 @@ function renderCanvas(titleHeight) {
 }
 
 function renderSubredditIcon(canvas, subredditIcon) {
-    const src = subredditIcon;
-    fabric.util.loadImage(src, function (img) {
-        const subredditIcon = new fabric.Image(img);
-        subredditIcon.set({
-            left: 17,
-            top: 17,
+    queueMicrotask(() => {
+        const src = subredditIcon;
+        fabric.util.loadImage(src, function (img) {
+            const subredditIcon = new fabric.Image(img);
+            subredditIcon.set({
+                left: 17,
+                top: 17,
+            });
+            subredditIcon.scale(0.15);
+            write(canvas, subredditIcon);
         });
-        subredditIcon.scale(0.15);
-        write(canvas, subredditIcon);
-        console.log('a');
     });
-    return null;
+    // return null;
 }
 
 function renderPostTitle(canvas, postTitleText) {
@@ -129,15 +130,17 @@ function renderPostTimeago(canvas, offset, postTimeago) {
 }
 
 function renderPostUpvoteIcon(canvas, textHeight) {
-    const src = 'file://' + __dirname + '/resources/upvote.png';
-    fabric.util.loadImage(src, function (img) {
-        const postUpvoteIcon = new fabric.Image(img);
-        postUpvoteIcon.set({
-            left: 17,
-            top: textHeight + 88,
+    queueMicrotask(() => {
+        const src = 'file://' + __dirname + '/resources/upvote.png';
+        fabric.util.loadImage(src, function (img) {
+            const postUpvoteIcon = new fabric.Image(img);
+            postUpvoteIcon.set({
+                left: 17,
+                top: textHeight + 88,
+            });
+            postUpvoteIcon.scale(0.025);
+            write(canvas, postUpvoteIcon);
         });
-        postUpvoteIcon.scale(0.025);
-        write(canvas, postUpvoteIcon);
     });
 }
 
@@ -155,29 +158,33 @@ function renderPostScore(canvas, textHeight, postScore) {
 }
 
 function renderPostDownvoteIcon(canvas, titleHeight, postScoreWidth) {
-    const src = 'file://' + __dirname + '/resources/upvote.png';
-    fabric.util.loadImage(src, function (img) {
-        const postDownvoteIcon = new fabric.Image(img);
-        postDownvoteIcon.set({
-            left: postScoreWidth + 55,
-            top: titleHeight + 88,
+    queueMicrotask(() => {
+        const src = 'file://' + __dirname + '/resources/upvote.png';
+        fabric.util.loadImage(src, function (img) {
+            const postDownvoteIcon = new fabric.Image(img);
+            postDownvoteIcon.set({
+                left: postScoreWidth + 55,
+                top: titleHeight + 88,
+            });
+            postDownvoteIcon.scale(0.025);
+            postDownvoteIcon.rotate(180);
+            write(canvas, postDownvoteIcon);
         });
-        postDownvoteIcon.scale(0.025);
-        postDownvoteIcon.rotate(180);
-        write(canvas, postDownvoteIcon);
     });
 }
 
 function renderPostCommentIcon(canvas, titleHeight, postScoreWidth) {
-    const src = 'file://' + __dirname + '/resources/commenticon.png';
-    fabric.util.loadImage(src, function (img) {
-        const postCommentIcon = new fabric.Image(img);
-        postCommentIcon.set({
-            left: postScoreWidth + 90,
-            top: titleHeight + 84,
+    queueMicrotask(() => {
+        const src = 'file://' + __dirname + '/resources/commenticon.png';
+        fabric.util.loadImage(src, function (img) {
+            const postCommentIcon = new fabric.Image(img);
+            postCommentIcon.set({
+                left: postScoreWidth + 90,
+                top: titleHeight + 84,
+            });
+            postCommentIcon.scale(0.30);
+            write(canvas, postCommentIcon);
         });
-        postCommentIcon.scale(0.30);
-        write(canvas, postCommentIcon);
     });
 }
 
