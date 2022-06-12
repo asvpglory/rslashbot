@@ -80,6 +80,7 @@ function renderSubredditIcon(canvas, subredditIcon) {
         });
         subredditIcon.scale(0.15);
         write(canvas, subredditIcon);
+        console.log('a');
     });
     return null;
 }

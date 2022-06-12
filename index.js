@@ -7,20 +7,17 @@ const renderComment = require('./comment');
 async function rslashbot() {
     const data = await fetchData();
 
-    renderPost(data.subreddit, data.subredditIcon, data.author, data.created, data.title, data.score, data.commentCount, postActions);
+    // let ids = [];
 
-    let ids = [];
+    renderPost(data.subreddit, data.subredditIcon, data.author, data.created, data.title, data.score, data.commentCount, postActions);
 
     for (comment of data.comments) {
         const id = generateUniqueId({
             length: 5
         });
-        ids.push(id);
+        // ids.push(id);
         renderComment(comment.author, comment.created, comment.body, comment.score, commentActions, id);
     }
-
-    console.log(ids);
 }
-
 
 rslashbot();
