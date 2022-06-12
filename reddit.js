@@ -11,6 +11,7 @@ module.exports = async () => {
     // The data to be returned (The submission and its comments (without replies))
     let submission = {};
     // Get the first submission on r/AskReddit when sorting by 'top'
+    const subredditIcon = await r.getSubreddit('askReddit').community_icon;
     const submissionListing = await r.getSubreddit('askReddit').getTop({
         limit: 1
     });
@@ -23,6 +24,7 @@ module.exports = async () => {
     submission['commentCount'] = shortenNum(submissionListing[0].num_comments);
     submission['created'] = convertTime(submissionListing[0].created_utc);
     submission['link'] = submissionListing[0].url;
+    submission['subredditIcon'] = subredditIcon;
 
     // Get the actual comments object
     const commentListing = await submissionListing[0].comments;
@@ -39,6 +41,7 @@ module.exports = async () => {
         });
         submission.comments.push({
             author: cleanComment.author.name,
+            authorIcon: await r.getUser(this.author).icon_img,
             body: cleanComment.body,
             score: shortenNum(cleanComment.score),
             created: convertTime(cleanComment.created_utc)

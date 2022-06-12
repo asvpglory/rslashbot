@@ -2,14 +2,14 @@ const fs = require('fs');
 const { lightSilver, eerieBlack, oldSilver } = require('./palette');
 fabric = require('fabric').fabric;
 
-module.exports = (subredditName, postAuthor, postTimeago, postTitle, postScore, postCommentAmount, postActions) => {
+module.exports = (subredditName, subredditIcon, postAuthor, postTimeago, postTitle, postScore, postCommentAmount, postActions) => {
     loadFonts();
     const title = loadPostTitle(postTitle);
     const titleHeight = title.height;
 
     // Main rendering
     const canvas = renderCanvas(titleHeight);
-    renderSubredditIcon(canvas);
+    renderSubredditIcon(canvas, subredditIcon);
     renderSubredditName(canvas, subredditName);
     renderPostTitle(canvas, title);
     const postAuthorTextWidth = renderPostAuthor(canvas, postAuthor);
@@ -70,8 +70,8 @@ function renderCanvas(titleHeight) {
     return canvas;
 }
 
-function renderSubredditIcon(canvas) {
-    const src = 'file://' + __dirname + '/resources/avatar.png';
+function renderSubredditIcon(canvas, subredditIcon) {
+    const src = subredditIcon;
     fabric.util.loadImage(src, function (img) {
         const subredditIcon = new fabric.Image(img);
         subredditIcon.set({
