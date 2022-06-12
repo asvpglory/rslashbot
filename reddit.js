@@ -41,7 +41,7 @@ module.exports = async () => {
         });
         submission.comments.push({
             author: cleanComment.author.name,
-            authorIcon: await r.getUser(this.author).icon_img,
+            authorIcon: await r.getUser(cleanComment.author.name).icon_img,
             body: cleanComment.body,
             score: shortenNum(cleanComment.score),
             created: convertTime(cleanComment.created_utc)

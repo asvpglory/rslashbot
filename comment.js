@@ -2,31 +2,31 @@ const fs = require('fs');
 const { lightSilver, eerieBlack, oldSilver, jet } = require('./palette');
 fabric = require('fabric').fabric;
 
-module.exports = (commentAuthor, commentTimeago, commentText, commentScore, commentActions, commentIndex) => {
+module.exports = (commentAuthor, commentTimeago, commentText, commentScore, commentActions, commentId) => {
     loadFonts();
     const text = loadCommentText(commentText);
     const textHeight = text.height;
     const canvas = renderCanvas(textHeight);
 
     // Main rendering
-    renderCommentAvatar(canvas, commentIndex);
-    renderCommentText(canvas, text, commentIndex);
-    renderTrail(canvas, textHeight, commentIndex);
-    const commentAuthorTextWidth = renderCommentAuthor(canvas, commentAuthor, commentIndex);
-    renderCommentTimeago(canvas, commentAuthorTextWidth, commentTimeago, commentIndex);
+    renderCommentAvatar(canvas, commentId);
+    renderCommentText(canvas, text, commentId);
+    renderTrail(canvas, textHeight, commentId);
+    const commentAuthorTextWidth = renderCommentAuthor(canvas, commentAuthor, commentId);
+    renderCommentTimeago(canvas, commentAuthorTextWidth, commentTimeago, commentId);
 
     // Bottom row rendering
-    renderCommentUpvoteIcon(canvas, textHeight, commentIndex);
-    const scoreWidth = renderCommentScore(canvas, textHeight, commentScore, commentIndex);
-    renderCommentDownvoteIcon(canvas, textHeight, scoreWidth, commentIndex);
-    renderCommentActions(canvas, textHeight, scoreWidth, commentActions, commentIndex);
+    renderCommentUpvoteIcon(canvas, textHeight, commentId);
+    const scoreWidth = renderCommentScore(canvas, textHeight, commentScore, commentId);
+    renderCommentDownvoteIcon(canvas, textHeight, scoreWidth, commentId);
+    renderCommentActions(canvas, textHeight, scoreWidth, commentActions, commentId);
 };
 
-function write(canvas, object, commentIndex) {
+function write(canvas, object, commentId) {
     canvas.add(object);
     canvas.renderAll();
     // out = fs.createWriteStream(__dirname + '/desktop/resources/models/helloworld.png');
-    out = fs.createWriteStream(__dirname + `/output/comment${commentIndex}.png`);
+    out = fs.createWriteStream(__dirname + `/output/${commentId}.png`);
     const stream = canvas.createPNGStream();
     stream.on('data', function (chunk) {
         out.write(chunk);
@@ -68,7 +68,7 @@ function renderCanvas(textHeight) {
     return canvas;
 }
 
-function renderCommentAvatar(canvas, commentIndex) {
+function renderCommentAvatar(canvas, commentId) {
     const src = 'file://' + __dirname + '/resources/avatar.png';
     fabric.util.loadImage(src, function (img) {
         const avatar = new fabric.Image(img);
@@ -77,12 +77,12 @@ function renderCommentAvatar(canvas, commentIndex) {
             top: 17,
         });
         avatar.scale(0.15);
-        write(canvas, avatar, commentIndex);
+        write(canvas, avatar, commentId);
     });
     return null;
 }
 
-function renderCommentAuthor(canvas, author, commentIndex) {
+function renderCommentAuthor(canvas, author, commentId) {
     const commentAuthorText = new fabric.Text(author, {
         top: 30,
         left: 67,
@@ -91,11 +91,11 @@ function renderCommentAuthor(canvas, author, commentIndex) {
         fontFamily: "IBM Plex Sans",
         fontWeight: "SemiBold"
     });
-    write(canvas, commentAuthorText, commentIndex);
+    write(canvas, commentAuthorText, commentId);
     return commentAuthorText.width;
 }
 
-function renderCommentTimeago(canvas, offset, timeago, commentIndex) {
+function renderCommentTimeago(canvas, offset, timeago, commentId) {
     const commentTimeagoText = new fabric.Text(timeago, {
         top: 30,
         left: offset + 73,
@@ -104,15 +104,15 @@ function renderCommentTimeago(canvas, offset, timeago, commentIndex) {
         fontFamily: "Noto Sans",
         fontWeight: "Medium"
     });
-    write(canvas, commentTimeagoText, commentIndex);
+    write(canvas, commentTimeagoText, commentId);
 }
 
-function renderCommentText(canvas, commentText, commentIndex) {
-    write(canvas, commentText, commentIndex);
+function renderCommentText(canvas, commentText, commentId) {
+    write(canvas, commentText, commentId);
     return null;
 }
 
-function renderTrail(canvas, textHeight, commentIndex) {
+function renderTrail(canvas, textHeight, commentId) {
     const trail = new fabric.Rect({
         width: 2,
         height: textHeight,
@@ -120,11 +120,11 @@ function renderTrail(canvas, textHeight, commentIndex) {
         top: 65,
         left: 35
     });
-    write(canvas, trail, commentIndex);
+    write(canvas, trail, commentId);
     return null;
 }
 
-function renderCommentUpvoteIcon(canvas, textHeight, commentIndex) {
+function renderCommentUpvoteIcon(canvas, textHeight, commentId) {
     const src = 'file://' + __dirname + '/resources/upvote.png';
     fabric.util.loadImage(src, function (img) {
         const commentUpvoteIcon = new fabric.Image(img);
@@ -133,11 +133,11 @@ function renderCommentUpvoteIcon(canvas, textHeight, commentIndex) {
             top: textHeight + 78,
         });
         commentUpvoteIcon.scale(0.025);
-        write(canvas, commentUpvoteIcon, commentIndex);
+        write(canvas, commentUpvoteIcon, commentId);
     });
 }
 
-function renderCommentScore(canvas, textHeight, commentScore, commentIndex) {
+function renderCommentScore(canvas, textHeight, commentScore, commentId) {
     const commentScoreText = new fabric.Text(commentScore, {
         left: 95,
         top: textHeight + 83,
@@ -146,11 +146,11 @@ function renderCommentScore(canvas, textHeight, commentScore, commentIndex) {
         fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });
-    write(canvas, commentScoreText, commentIndex);
+    write(canvas, commentScoreText, commentId);
     return commentScoreText.width;
 }
 
-function renderCommentDownvoteIcon(canvas, textHeight, scoreWidth, commentIndex) {
+function renderCommentDownvoteIcon(canvas, textHeight, scoreWidth, commentId) {
     const src = 'file://' + __dirname + '/resources/upvote.png';
     fabric.util.loadImage(src, function (img) {
         const commentDownvoteIcon = new fabric.Image(img);
@@ -160,11 +160,11 @@ function renderCommentDownvoteIcon(canvas, textHeight, scoreWidth, commentIndex)
         });
         commentDownvoteIcon.scale(0.025);
         commentDownvoteIcon.rotate(180);
-        write(canvas, commentDownvoteIcon, commentIndex);
+        write(canvas, commentDownvoteIcon, commentId);
     });
 }
 
-function renderCommentActions(canvas, textHeight, scoreWidth, commentActions, commentIndex) {
+function renderCommentActions(canvas, textHeight, scoreWidth, commentActions, commentId) {
     const commentActionsText = new fabric.Text(commentActions, {
         left: scoreWidth + 140,
         top: textHeight + 83,
@@ -173,6 +173,6 @@ function renderCommentActions(canvas, textHeight, scoreWidth, commentActions, co
         fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });
-    write(canvas, commentActionsText, commentIndex);
+    write(canvas, commentActionsText, commentId);
     return null;
 }

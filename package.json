@@ -4,6 +4,7 @@
     "dotenv": "^16.0.1",
     "epoch-to-timeago": "^1.0.1",
     "fabric": "^5.2.1",
+    "generate-unique-id": "^2.0.1",
     "snoowrap": "^1.23.0"
   },
   "name": "rslashbot",
