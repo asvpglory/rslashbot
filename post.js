@@ -183,7 +183,7 @@ function renderPostCommentIcon(canvas, titleHeight, postScoreWidth) {
 function renderCommentAmount(canvas, titleHeight, postScoreWidth, commentAmount) {
     const commentAmountText = new fabric.Text(commentAmount, {
         top: titleHeight + 93,
-        left: postScoreWidth + 130,
+        left: postScoreWidth + 128,
         fill: oldSilver,
         fontSize: 15,
         fontFamily: "IBM Plex Sans",

@@ -7,7 +7,7 @@ const r = new snoowrap({
     userAgent: "rslashbot/v0.0 by unrxly",
 });
 
-async function fetchData() {
+module.exports = async () => {
     // The data to be returned (The submission and its comments (without replies))
     let submission = {};
     // Get the first submission on r/AskReddit when sorting by 'top'
@@ -22,6 +22,7 @@ async function fetchData() {
     submission['author'] = submissionListing[0].author.name;
     submission['commentCount'] = shortenNum(submissionListing[0].num_comments);
     submission['created'] = convertTime(submissionListing[0].created_utc);
+    submission['link'] = submissionListing[0].url;
 
     // Get the actual comments object
     const commentListing = await submissionListing[0].comments;
@@ -44,7 +45,7 @@ async function fetchData() {
         });
     }
     return submission;
-}
+};
 
-fetchData()
-    .then((res) => console.log(res));
+// fetchData()
+    // .then((res) => console.log(res));
