@@ -20,7 +20,7 @@ module.exports = async () => {
     submission['title'] = submissionListing[0].title;
     submission['subreddit'] = submissionListing[0].subreddit_name_prefixed;
     submission['score'] = shortenNum(submissionListing[0].score);
-    submission['author'] = submissionListing[0].author.name;
+    submission['author'] = "u/" + submissionListing[0].author.name;
     submission['commentCount'] = shortenNum(submissionListing[0].num_comments);
     submission['created'] = convertTime(submissionListing[0].created_utc);
     submission['link'] = submissionListing[0].url;

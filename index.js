@@ -17,13 +17,13 @@ function render(data) {
 
     renderPost(data.subreddit, data.subredditIcon, data.author, data.created, data.title, data.score, data.commentCount, postActions);
 
-    for (comment of data.comments) {
-        const id = generateUniqueId({
-            length: 5
-        });
-        ids.push(id);
-        renderComment(comment.author, comment.created, comment.body, comment.score, commentActions, id);
-    }
+    // for (comment of data.comments) {
+    //     const id = generateUniqueId({
+    //         length: 5
+    //     });
+    //     ids.push(id);
+    //     renderComment(comment.author, comment.created, comment.body, comment.score, commentActions, id);
+    // }
 
     return ids;
 }

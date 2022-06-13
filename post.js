@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { lightSilver, eerieBlack, oldSilver } = require('./palette');
 fabric = require('fabric').fabric;
+const unit = 50;
 
 module.exports = (subredditName, subredditIcon, postAuthor, postTimeago, postTitle, postScore, postCommentAmount, postActions) => {
     loadFonts();
@@ -50,11 +51,11 @@ function loadFonts() {
 
 function loadPostTitle(postTitle) {
     const postTitleText = new fabric.Textbox(postTitle, {
-        width: 550,
-        top: 69,
-        left: 17,
+        width: 1800,
+        top: 280,
+        left: 37,
         fill: lightSilver,
-        fontSize: 20,
+        fontSize: 135,
         fontFamily: 'IBM Plex Sans',
         fontWeight: 'Bold'
     });
@@ -65,8 +66,10 @@ function renderCanvas(titleHeight) {
     const canvas = new fabric.StaticCanvas(null, {
         // width: 900,
         // height: titleHeight + 140,
+
         width: 1920,
         height: 1080,
+
         backgroundColor: eerieBlack
     });
     return canvas;
@@ -75,13 +78,13 @@ function renderCanvas(titleHeight) {
 function renderSubredditIcon(canvas, subredditIcon) {
     queueMicrotask(() => {
         const src = subredditIcon;
-        fabric.util.loadImage(src, function (img) {
+        fabric.util.loadImage('file://' + __dirname + '/resources/askreddit.png', function (img) {
             const subredditIcon = new fabric.Image(img);
             subredditIcon.set({
-                left: 17,
-                top: 17,
+                left: 40,
+                top: 40,
             });
-            subredditIcon.scale(0.15);
+            subredditIcon.scale(0.7);
             write(canvas, subredditIcon);
         });
     });
@@ -95,10 +98,10 @@ function renderPostTitle(canvas, postTitleText) {
 
 function renderPostAuthor(canvas, postAuthor) {
     const postAuthorText = new fabric.Text(postAuthor, {
-        top: 40,
-        left: 67,
+        top: 130,
+        left: 240,
         fill: oldSilver,
-        fontSize: 13,
+        fontSize: 54,
         fontFamily: "IBM Plex Sans",
         fontWeight: "SemiBold"
     });
@@ -108,10 +111,10 @@ function renderPostAuthor(canvas, postAuthor) {
 
 function renderSubredditName(canvas, subredditName) {
     const subredditNameText = new fabric.Text(subredditName, {
-        top: 20,
-        left: 67,
+        top: 60,
+        left: 240,
         fill: lightSilver,
-        fontSize: 15,
+        fontSize: 50,
         fontFamily: "IBM Plex Sans",
         fontWeight: "SemiBold"
     });
@@ -121,10 +124,10 @@ function renderSubredditName(canvas, subredditName) {
 
 function renderPostTimeago(canvas, offset, postTimeago) {
     const postTimeagoText = new fabric.Text(postTimeago, {
-        top: 40,
-        left: offset + 73,
+        top: 140,
+        left: offset + 250,
         fill: oldSilver,
-        fontSize: 13,
+        fontSize: 40,
         fontFamily: "Noto Sans",
         fontWeight: "Medium"
     });
@@ -137,10 +140,10 @@ function renderPostUpvoteIcon(canvas, textHeight) {
         fabric.util.loadImage(src, function (img) {
             const postUpvoteIcon = new fabric.Image(img);
             postUpvoteIcon.set({
-                left: 17,
-                top: textHeight + 88,
+                left: 77,
+                top: textHeight + 400,
             });
-            postUpvoteIcon.scale(0.025);
+            postUpvoteIcon.scale(0.1);
             write(canvas, postUpvoteIcon);
         });
     });
@@ -148,10 +151,10 @@ function renderPostUpvoteIcon(canvas, textHeight) {
 
 function renderPostScore(canvas, textHeight, postScore) {
     const text = new fabric.Text(postScore, {
-        left: 47,
-        top: textHeight + 93,
+        left: 180,
+        top: textHeight + 420,
         fill: oldSilver,
-        fontSize: 15,
+        fontSize: 50,
         fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });
@@ -165,10 +168,10 @@ function renderPostDownvoteIcon(canvas, titleHeight, postScoreWidth) {
         fabric.util.loadImage(src, function (img) {
             const postDownvoteIcon = new fabric.Image(img);
             postDownvoteIcon.set({
-                left: postScoreWidth + 55,
-                top: titleHeight + 88,
+                left: postScoreWidth + 190,
+                top: titleHeight + 400,
             });
-            postDownvoteIcon.scale(0.025);
+            postDownvoteIcon.scale(0.1);
             postDownvoteIcon.rotate(180);
             write(canvas, postDownvoteIcon);
         });
@@ -181,10 +184,10 @@ function renderPostCommentIcon(canvas, titleHeight, postScoreWidth) {
         fabric.util.loadImage(src, function (img) {
             const postCommentIcon = new fabric.Image(img);
             postCommentIcon.set({
-                left: postScoreWidth + 90,
-                top: titleHeight + 84,
+                left: postScoreWidth + 325,
+                top: titleHeight + 390,
             });
-            postCommentIcon.scale(0.30);
+            // postCommentIcon.scale();
             write(canvas, postCommentIcon);
         });
     });
@@ -192,10 +195,10 @@ function renderPostCommentIcon(canvas, titleHeight, postScoreWidth) {
 
 function renderCommentAmount(canvas, titleHeight, postScoreWidth, commentAmount) {
     const commentAmountText = new fabric.Text(commentAmount, {
-        top: titleHeight + 93,
-        left: postScoreWidth + 128,
+        top: titleHeight + 420,
+        left: postScoreWidth + 450,
         fill: oldSilver,
-        fontSize: 15,
+        fontSize: 45,
         fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });
@@ -204,10 +207,10 @@ function renderCommentAmount(canvas, titleHeight, postScoreWidth, commentAmount)
 
 function renderPostActions(canvas, titleHeight, postScoreWidth, commentActions) {
     const postActionsText = new fabric.Text(commentActions, {
-        left: postScoreWidth + 180,
-        top: titleHeight + 93,
+        left: postScoreWidth + 700,
+        top: titleHeight + 420,
         fill: oldSilver,
-        fontSize: 15,
+        fontSize: 45,
         fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });
