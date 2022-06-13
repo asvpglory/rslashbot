@@ -63,8 +63,10 @@ function loadPostTitle(postTitle) {
 
 function renderCanvas(titleHeight) {
     const canvas = new fabric.StaticCanvas(null, {
-        width: 600,
-        height: titleHeight + 140,
+        // width: 900,
+        // height: titleHeight + 140,
+        width: 1920,
+        height: 1080,
         backgroundColor: eerieBlack
     });
     return canvas;

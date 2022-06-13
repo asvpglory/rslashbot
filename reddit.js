@@ -3,7 +3,7 @@ const { convertTime, shortenNum } = require('./utilities');
 require('dotenv').config();
 
 const r = new snoowrap({
-    accessToken: process.env.TOKEN,
+    accessToken: process.env.REDDIT_ACCESS_TOKEN,
     userAgent: "rslashbot/v0.0 by unrxly",
 });
 

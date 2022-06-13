@@ -5,7 +5,8 @@
     "epoch-to-timeago": "^1.0.1",
     "fabric": "^5.2.1",
     "generate-unique-id": "^2.0.1",
-    "snoowrap": "^1.23.0"
+    "snoowrap": "^1.23.0",
+    "twitter-api-v2": "^1.12.2"
   },
   "name": "rslashbot",
   "version": "1.0.0",
