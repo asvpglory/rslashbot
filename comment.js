@@ -48,11 +48,11 @@ function loadFonts() {
 
 function loadCommentText(comment) {
     const commentText = new fabric.Textbox(comment, {
-        width: 760,
-        top: 64,
-        left: 67,
+        width: 1600,
+        top: 220,
+        left: 230,
         fill: lightSilver,
-        fontSize: 18,
+        fontSize: 70,
         fontFamily: 'Noto Sans',
         fontWeight: 'Medium'
     });
@@ -61,8 +61,12 @@ function loadCommentText(comment) {
 
 function renderCanvas(textHeight) {
     const canvas = new fabric.StaticCanvas(null, {
-        width: 900,
-        height: textHeight + 125,
+        // width: 900,
+        // height: textHeight + 125,
+
+        width: 1920,
+        height: 1080,
+
         backgroundColor: eerieBlack
     });
     return canvas;
@@ -73,10 +77,10 @@ function renderCommentAvatar(canvas, commentId) {
     fabric.util.loadImage(src, function (img) {
         const avatar = new fabric.Image(img);
         avatar.set({
-            left: 17,
-            top: 17,
+            left: 40,
+            top: 40,
         });
-        avatar.scale(0.15);
+        avatar.scale(0.6);
         write(canvas, avatar, commentId);
     });
     return null;
@@ -84,10 +88,10 @@ function renderCommentAvatar(canvas, commentId) {
 
 function renderCommentAuthor(canvas, author, commentId) {
     const commentAuthorText = new fabric.Text(author, {
-        top: 30,
-        left: 67,
+        top: 95,
+        left: 230,
         fill: lightSilver,
-        fontSize: 16,
+        fontSize: 50,
         fontFamily: "IBM Plex Sans",
         fontWeight: "SemiBold"
     });
@@ -97,10 +101,10 @@ function renderCommentAuthor(canvas, author, commentId) {
 
 function renderCommentTimeago(canvas, offset, timeago, commentId) {
     const commentTimeagoText = new fabric.Text(timeago, {
-        top: 30,
-        left: offset + 73,
+        top: 102,
+        left: offset + 250,
         fill: oldSilver,
-        fontSize: 15,
+        fontSize: 40,
         fontFamily: "Noto Sans",
         fontWeight: "Medium"
     });
@@ -114,11 +118,11 @@ function renderCommentText(canvas, commentText, commentId) {
 
 function renderTrail(canvas, textHeight, commentId) {
     const trail = new fabric.Rect({
-        width: 2,
+        width: 6,
         height: textHeight,
         fill: jet,
-        top: 65,
-        left: 35
+        top: 240,
+        left: 115
     });
     write(canvas, trail, commentId);
     return null;
@@ -129,20 +133,20 @@ function renderCommentUpvoteIcon(canvas, textHeight, commentId) {
     fabric.util.loadImage(src, function (img) {
         const commentUpvoteIcon = new fabric.Image(img);
         commentUpvoteIcon.set({
-            left: 65,
-            top: textHeight + 78,
+            left: 120,
+            top: textHeight + 280,
         });
-        commentUpvoteIcon.scale(0.025);
+        commentUpvoteIcon.scale(0.09);
         write(canvas, commentUpvoteIcon, commentId);
     });
 }
 
 function renderCommentScore(canvas, textHeight, commentScore, commentId) {
     const commentScoreText = new fabric.Text(commentScore, {
-        left: 95,
-        top: textHeight + 83,
+        left: 220,
+        top: textHeight + 300,
         fill: lightSilver,
-        fontSize: 15,
+        fontSize: 40,
         fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });
@@ -155,10 +159,10 @@ function renderCommentDownvoteIcon(canvas, textHeight, scoreWidth, commentId) {
     fabric.util.loadImage(src, function (img) {
         const commentDownvoteIcon = new fabric.Image(img);
         commentDownvoteIcon.set({
-            left: scoreWidth + 102,
-            top: textHeight + 78,
+            left: scoreWidth + 240,
+            top: textHeight + 280,
         });
-        commentDownvoteIcon.scale(0.025);
+        commentDownvoteIcon.scale(0.09);
         commentDownvoteIcon.rotate(180);
         write(canvas, commentDownvoteIcon, commentId);
     });
@@ -166,10 +170,10 @@ function renderCommentDownvoteIcon(canvas, textHeight, scoreWidth, commentId) {
 
 function renderCommentActions(canvas, textHeight, scoreWidth, commentActions, commentId) {
     const commentActionsText = new fabric.Text(commentActions, {
-        left: scoreWidth + 140,
-        top: textHeight + 83,
+        left: scoreWidth + 370,
+        top: textHeight + 300,
         fill: oldSilver,
-        fontSize: 15,
+        fontSize: 40,
         fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });

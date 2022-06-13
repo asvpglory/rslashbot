@@ -1,7 +1,6 @@
 const fs = require('fs');
 const { lightSilver, eerieBlack, oldSilver } = require('./palette');
 fabric = require('fabric').fabric;
-const unit = 50;
 
 module.exports = (subredditName, subredditIcon, postAuthor, postTimeago, postTitle, postScore, postCommentAmount, postActions) => {
     loadFonts();

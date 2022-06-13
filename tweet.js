@@ -13,7 +13,6 @@ module.exports = async () => {
 
         const mediaIds = await Promise.all([
             client.v1.uploadMedia('./output/submission.png'),
-
         ]);
 
         await client.v1.tweet('Images.', { media_ids: mediaIds });
