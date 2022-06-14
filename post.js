@@ -5,10 +5,9 @@ fabric = require('fabric').fabric;
 module.exports = (subredditName, subredditIcon, postAuthor, postTimeago, postTitle, postScore, postCommentAmount, postActions) => {
     loadFonts();
     const title = loadPostTitle(postTitle);
-    const titleHeight = title.height;
 
     // Main rendering
-    const canvas = renderCanvas(titleHeight);
+    const canvas = renderCanvas(title.height);
     renderSubredditIcon(canvas, subredditIcon);
     renderSubredditName(canvas, subredditName);
     renderPostTitle(canvas, title);
@@ -16,12 +15,12 @@ module.exports = (subredditName, subredditIcon, postAuthor, postTimeago, postTit
     renderPostTimeago(canvas, postAuthorTextWidth, postTimeago);
 
     // Rendering bottom row
-    renderPostUpvoteIcon(canvas, titleHeight);
-    const scoreWidth = renderPostScore(canvas, titleHeight, postScore);
-    renderPostDownvoteIcon(canvas, titleHeight, scoreWidth);
-    renderPostCommentIcon(canvas, titleHeight, scoreWidth);
-    renderCommentAmount(canvas, titleHeight, scoreWidth, postCommentAmount);
-    renderPostActions(canvas, titleHeight, scoreWidth, postActions);
+    renderPostUpvoteIcon(canvas);
+    const scoreWidth = renderPostScore(canvas, postScore);
+    renderPostDownvoteIcon(canvas, scoreWidth);
+    renderPostCommentIcon(canvas, scoreWidth);
+    renderCommentAmount(canvas, scoreWidth, postCommentAmount);
+    renderPostActions(canvas, scoreWidth, postActions);
 };
 
 function write(canvas, object) {
@@ -90,8 +89,8 @@ function renderSubredditIcon(canvas, subredditIcon) {
         fabric.util.loadImage('file://' + __dirname + '/resources/askreddit.png', function (img) {
             const subredditIcon = new fabric.Image(img);
             subredditIcon.set({
-                left: 40,
                 top: 40,
+                left: 40,
             });
             subredditIcon.scale(0.7);
             write(canvas, subredditIcon);
@@ -143,14 +142,14 @@ function renderPostTimeago(canvas, offset, postTimeago) {
     write(canvas, postTimeagoText);
 }
 
-function renderPostUpvoteIcon(canvas, textHeight) {
+function renderPostUpvoteIcon(canvas) {
     queueMicrotask(() => {
         const src = 'file://' + __dirname + '/resources/upvote.png';
         fabric.util.loadImage(src, function (img) {
             const postUpvoteIcon = new fabric.Image(img);
             postUpvoteIcon.set({
+                top: 895,
                 left: 77,
-                top: textHeight + 400,
             });
             postUpvoteIcon.scale(0.1);
             write(canvas, postUpvoteIcon);
@@ -158,10 +157,10 @@ function renderPostUpvoteIcon(canvas, textHeight) {
     });
 }
 
-function renderPostScore(canvas, textHeight, postScore) {
+function renderPostScore(canvas, postScore) {
     const text = new fabric.Text(postScore, {
+        top: 915,
         left: 180,
-        top: textHeight + 420,
         fill: oldSilver,
         fontSize: 50,
         fontFamily: "IBM Plex Sans",
@@ -171,14 +170,14 @@ function renderPostScore(canvas, textHeight, postScore) {
     return text.width;
 }
 
-function renderPostDownvoteIcon(canvas, titleHeight, postScoreWidth) {
+function renderPostDownvoteIcon(canvas, postScoreWidth) {
     queueMicrotask(() => {
         const src = 'file://' + __dirname + '/resources/upvote.png';
         fabric.util.loadImage(src, function (img) {
             const postDownvoteIcon = new fabric.Image(img);
             postDownvoteIcon.set({
+                top: 895,
                 left: postScoreWidth + 190,
-                top: titleHeight + 400,
             });
             postDownvoteIcon.scale(0.1);
             postDownvoteIcon.rotate(180);
@@ -187,14 +186,14 @@ function renderPostDownvoteIcon(canvas, titleHeight, postScoreWidth) {
     });
 }
 
-function renderPostCommentIcon(canvas, titleHeight, postScoreWidth) {
+function renderPostCommentIcon(canvas, postScoreWidth) {
     queueMicrotask(() => {
         const src = 'file://' + __dirname + '/resources/commenticon.png';
         fabric.util.loadImage(src, function (img) {
             const postCommentIcon = new fabric.Image(img);
             postCommentIcon.set({
+                top: 885,
                 left: postScoreWidth + 325,
-                top: titleHeight + 390,
             });
             // postCommentIcon.scale();
             write(canvas, postCommentIcon);
@@ -202,9 +201,9 @@ function renderPostCommentIcon(canvas, titleHeight, postScoreWidth) {
     });
 }
 
-function renderCommentAmount(canvas, titleHeight, postScoreWidth, commentAmount) {
+function renderCommentAmount(canvas, postScoreWidth, commentAmount) {
     const commentAmountText = new fabric.Text(commentAmount, {
-        top: titleHeight + 420,
+        top: 915,
         left: postScoreWidth + 450,
         fill: oldSilver,
         fontSize: 45,
@@ -214,10 +213,10 @@ function renderCommentAmount(canvas, titleHeight, postScoreWidth, commentAmount)
     write(canvas, commentAmountText);
 }
 
-function renderPostActions(canvas, titleHeight, postScoreWidth, commentActions) {
+function renderPostActions(canvas, postScoreWidth, commentActions) {
     const postActionsText = new fabric.Text(commentActions, {
+        top: 915,
         left: postScoreWidth + 700,
-        top: titleHeight + 420,
         fill: oldSilver,
         fontSize: 45,
         fontFamily: "IBM Plex Sans",

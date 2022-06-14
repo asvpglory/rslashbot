@@ -14,7 +14,7 @@ async function rslashbot() {
 function render(data) {
     let ids = [];
 
-    renderPost(data.subreddit, data.subredditIcon, data.author, data.created, data.title, data.score, data.commentCount, postActions);
+    renderPost(data.subreddit, data.subredditIcon, data.author, data.created, "What is your favourite color?", data.score, data.commentCount, postActions);
 
     // for (comment of data.comments) {
     //     const id = generateUniqueId({
