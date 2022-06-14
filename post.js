@@ -6,7 +6,7 @@ module.exports = (subredditName, subredditIcon, postAuthor, postTimeago, postTit
     loadFonts();
     const title = loadPostTitle(postTitle);
 
-    // Main rendering
+    // Rendering main content
     const canvas = renderCanvas(title.height);
     renderSubredditIcon(canvas, subredditIcon);
     renderSubredditName(canvas, subredditName);
@@ -26,12 +26,12 @@ module.exports = (subredditName, subredditIcon, postAuthor, postTimeago, postTit
 function write(canvas, object) {
     canvas.add(object);
     canvas.renderAll();
-    // out = fs.createWriteStream(__dirname + '/desktop/output/models/submission.png');
     out = fs.createWriteStream(__dirname + `/output/submission.png`);
     const stream = canvas.createPNGStream();
     stream.on('data', function (chunk) {
         out.write(chunk);
     });
+    return null;
 }
 
 function loadFonts() {
@@ -58,6 +58,7 @@ function loadPostTitle(postTitle) {
         fontWeight: 'Bold'
     });
 
+    // Fit text into image
     let fit = false;
     while (!fit) {
         let size = postTitleText.fontSize;
@@ -74,7 +75,7 @@ function loadPostTitle(postTitle) {
     return postTitleText;
 }
 
-function renderCanvas(titleHeight) {
+function renderCanvas() {
     const canvas = new fabric.StaticCanvas(null, {
         width: 1920,
         height: 1080,
@@ -96,7 +97,7 @@ function renderSubredditIcon(canvas, subredditIcon) {
             write(canvas, subredditIcon);
         });
     });
-    // return null;
+    return null;
 }
 
 function renderPostTitle(canvas, postTitleText) {
@@ -140,6 +141,7 @@ function renderPostTimeago(canvas, offset, postTimeago) {
         fontWeight: "Medium"
     });
     write(canvas, postTimeagoText);
+    return null;
 }
 
 function renderPostUpvoteIcon(canvas) {
@@ -155,6 +157,7 @@ function renderPostUpvoteIcon(canvas) {
             write(canvas, postUpvoteIcon);
         });
     });
+    return null;
 }
 
 function renderPostScore(canvas, postScore) {
@@ -184,6 +187,7 @@ function renderPostDownvoteIcon(canvas, postScoreWidth) {
             write(canvas, postDownvoteIcon);
         });
     });
+    return null;
 }
 
 function renderPostCommentIcon(canvas, postScoreWidth) {
@@ -195,10 +199,10 @@ function renderPostCommentIcon(canvas, postScoreWidth) {
                 top: 885,
                 left: postScoreWidth + 325,
             });
-            // postCommentIcon.scale();
             write(canvas, postCommentIcon);
         });
     });
+    return null;
 }
 
 function renderCommentAmount(canvas, postScoreWidth, commentAmount) {
@@ -211,6 +215,7 @@ function renderCommentAmount(canvas, postScoreWidth, commentAmount) {
         fontWeight: "Bold"
     });
     write(canvas, commentAmountText);
+    return null;
 }
 
 function renderPostActions(canvas, postScoreWidth, commentActions) {
