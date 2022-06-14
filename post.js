@@ -52,23 +52,33 @@ function loadPostTitle(postTitle) {
     const postTitleText = new fabric.Textbox(postTitle, {
         width: 1800,
         top: 280,
-        left: 37,
+        left: 45,
         fill: lightSilver,
-        fontSize: 135,
+        fontSize: 230,
         fontFamily: 'IBM Plex Sans',
         fontWeight: 'Bold'
     });
+
+    let fit = false;
+    while (!fit) {
+        let size = postTitleText.fontSize;
+        if (Math.round(postTitleText.height) > 561) {
+            postTitleText.set({
+                fontSize: size - 1
+            });
+        } else {
+            console.log(postTitleText.height);
+            fit = true;
+        }
+    }
+
     return postTitleText;
 }
 
 function renderCanvas(titleHeight) {
     const canvas = new fabric.StaticCanvas(null, {
-        // width: 900,
-        // height: titleHeight + 140,
-
         width: 1920,
         height: 1080,
-
         backgroundColor: eerieBlack
     });
     return canvas;

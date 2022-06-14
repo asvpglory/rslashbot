@@ -7,14 +7,14 @@ module.exports = (commentAuthor, commentTimeago, commentText, commentScore, comm
     const text = loadCommentText(commentText);
     const canvas = renderCanvas();
 
-    // Main rendering
+    // Rendering main content
     renderCommentAvatar(canvas, commentId);
     renderCommentText(canvas, text, commentId);
     renderTrail(canvas, text.height, commentId);
     const commentAuthorTextWidth = renderCommentAuthor(canvas, commentAuthor, commentId);
     renderCommentTimeago(canvas, commentAuthorTextWidth, commentTimeago, commentId);
 
-    // Bottom row rendering
+    // Rendering bottom row
     renderCommentUpvoteIcon(canvas, commentId);
     const scoreWidth = renderCommentScore(canvas, commentScore, commentId);
     renderCommentDownvoteIcon(canvas, scoreWidth, commentId);
@@ -29,6 +29,7 @@ function write(canvas, object, commentId) {
     stream.on('data', function (chunk) {
         out.write(chunk);
     });
+    return null;
 }
 
 function loadFonts() {
@@ -122,6 +123,7 @@ function renderCommentTimeago(canvas, offset, timeago, commentId) {
         fontWeight: "Medium"
     });
     write(canvas, commentTimeagoText, commentId);
+    return null;
 }
 
 function renderCommentText(canvas, commentText, commentId) {
@@ -152,6 +154,7 @@ function renderCommentUpvoteIcon(canvas, commentId) {
         commentUpvoteIcon.scale(0.09);
         write(canvas, commentUpvoteIcon, commentId);
     });
+    return null;
 }
 
 function renderCommentScore(canvas, commentScore, commentId) {
@@ -179,6 +182,7 @@ function renderCommentDownvoteIcon(canvas, scoreWidth, commentId) {
         commentDownvoteIcon.rotate(180);
         write(canvas, commentDownvoteIcon, commentId);
     });
+    return null;
 }
 
 function renderCommentActions(canvas, scoreWidth, commentActions, commentId) {
