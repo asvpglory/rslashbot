@@ -6,7 +6,7 @@ module.exports = (commentAuthor, commentTimeago, commentText, commentScore, comm
     loadFonts();
     const text = loadCommentText(commentText);
     const textHeight = text.height;
-    const canvas = renderCanvas(textHeight);
+    const canvas = renderCanvas();
 
     // Main rendering
     renderCommentAvatar(canvas, commentId);
@@ -25,7 +25,6 @@ module.exports = (commentAuthor, commentTimeago, commentText, commentScore, comm
 function write(canvas, object, commentId) {
     canvas.add(object);
     canvas.renderAll();
-    // out = fs.createWriteStream(__dirname + '/desktop/resources/models/helloworld.png');
     out = fs.createWriteStream(__dirname + `/output/${commentId}.png`);
     const stream = canvas.createPNGStream();
     stream.on('data', function (chunk) {
@@ -52,18 +51,35 @@ function loadCommentText(comment) {
         top: 220,
         left: 230,
         fill: lightSilver,
-        fontSize: 70,
+        fontSize: 160,
         fontFamily: 'Noto Sans',
         fontWeight: 'Medium'
     });
+
+    console.log(commentText.height);
+
+    let fit = false;
+    while (!fit) {
+        let size = commentText.fontSize;
+        if (Math.round(commentText.height) > 653) {
+            console.log(`Text height is now ${commentText.height}`);
+            console.log(`Font size is now ${size}`);
+            commentText.set({
+                fontSize: size - 1
+            });
+        }
+        else {
+            console.log(`Text height is now ${commentText.height}`);
+            console.log('This worked', size);
+            fit = true;
+        }
+    }
+
     return commentText;
 }
 
-function renderCanvas(textHeight) {
+function renderCanvas() {
     const canvas = new fabric.StaticCanvas(null, {
-        // width: 900,
-        // height: textHeight + 125,
-
         width: 1920,
         height: 1080,
 
@@ -112,6 +128,11 @@ function renderCommentTimeago(canvas, offset, timeago, commentId) {
 }
 
 function renderCommentText(canvas, commentText, commentId) {
+    // commentText.set({
+    // fontSize: 14.79,
+    // width: canvas.width * 0.8333333333333
+    // });
+    // console.log(canvas.width);
     write(canvas, commentText, commentId);
     return null;
 }
