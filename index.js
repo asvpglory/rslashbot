@@ -4,7 +4,6 @@ const fetchData = require('./reddit');
 const renderPost = require('./post');
 const renderComment = require('./comment');
 const tweet = require('./tweet');
-const fs = require('fs');
 
 async function rslashbot() {
     const data = await fetchData();
