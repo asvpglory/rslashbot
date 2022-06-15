@@ -67,7 +67,6 @@ function loadPostTitle(postTitle) {
                 fontSize: size - 1
             });
         } else {
-            console.log(postTitleText.height);
             fit = true;
         }
     }

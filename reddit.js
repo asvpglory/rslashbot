@@ -1,13 +1,13 @@
 const snoowrap = require('snoowrap');
 const { convertTime, shortenNum } = require('./utilities');
+const axios = require('axios');
+const qs = require('qs');
 require('dotenv').config();
 
-const r = new snoowrap({
-    accessToken: process.env.REDDIT_ACCESS_TOKEN,
-    userAgent: "rslashbot/v0.0 by unrxly",
-});
-
 module.exports = async () => {
+    const accessToken = await fetchToken();
+    const r = createClient(accessToken);
+
     // The data to be returned (The submission and its comments (without replies))
     let submission = {};
 
@@ -51,6 +51,29 @@ module.exports = async () => {
         });
     }
     return submission;
+};
+
+async function fetchToken() {
+    const response = await axios({
+        method: 'post',
+        url: 'https://www.reddit.com/api/v1/access_token',
+        data: qs.stringify({
+            grant_type: 'client_credentials',
+        }),
+        auth: {
+            username: 'znCfedA56yd_g1tT9i9wwA',
+            password: 'pBRZySLKL7NeK1lt4CuiXStaVYCrgA'
+        }
+    });
+    return response.data.access_token;
+}
+
+function createClient(accessToken) {
+    const r = new snoowrap({
+        accessToken: accessToken,
+        userAgent: "rslashbot/v0.0 by unrxly",
+    });
+    return r;
 };
 
 // fetchData()

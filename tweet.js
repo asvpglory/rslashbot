@@ -8,18 +8,33 @@ const client = new TwitterApi({
     accessSecret: process.env.LYRICK_SECRET
 });
 
-module.exports = async () => {
+module.exports = async (ids) => {
     try {
 
-        const mediaIds = await Promise.all([
-            client.v1.uploadMedia('./output/submission.png'),
+        // Upload post title image
+        const mediaId = await Promise.all([
+            client.v1.uploadMedia('output/submission.png'),
         ]);
 
-        await client.v1.tweet('Images.', { media_ids: mediaIds });
+        // Tweet post title image
+        const createdTweet = await client.v1.tweet("A", { media_ids: mediaId });
+
+        // Upload comments
+        const mediaIds = await Promise.all([
+            client.v1.uploadMedia(`output/${ids[0]}.png`),
+            client.v1.uploadMedia(`output/${ids[1]}.png`),
+            client.v1.uploadMedia(`output/${ids[2]}.png`),
+            client.v1.uploadMedia(`output/${ids[3]}.png`),
+        ]);
+
+        // Tweet comments in reply to title image
+        await client.v1.reply(
+            'reply to previously created tweet.',
+            createdTweet.id_str, { media_ids: mediaIds }
+        );
 
         // console.log('Tweet', createdTweet.id, ':', createdTweet.text);
-
-        // return createdTweet;
+        return createdTweet;
 
     } catch (error) {
         console.log(error);

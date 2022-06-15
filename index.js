@@ -6,9 +6,14 @@ const renderComment = require('./comment');
 const tweet = require('./tweet');
 
 async function rslashbot() {
+    // Get data from reddit
     const data = await fetchData();
-    const ids = render(data);
-    // tweet();
+
+    // Render posts and comments and get the ids of the comments
+    const ids = await render(data);
+
+    // Tweet images
+    const l = await tweet(ids);
 }
 
 function render(data) {
