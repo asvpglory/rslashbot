@@ -10,6 +10,7 @@ const r = new snoowrap({
 module.exports = async () => {
     // The data to be returned (The submission and its comments (without replies))
     let submission = {};
+
     // Get the first submission on r/AskReddit when sorting by 'top'
     const subredditIcon = await r.getSubreddit('askReddit').community_icon;
     const submissionListing = await r.getSubreddit('askReddit').getTop({
@@ -28,11 +29,13 @@ module.exports = async () => {
 
     // Get the actual comments object
     const commentListing = await submissionListing[0].comments;
+
     // Fetch the comments inside the comments object from reddit
     const comments = await commentListing.fetchMore({
-        amount: 3,
+        amount: 4,
         // skipReplies: false
     });
+
     // For every comment, print that comment with 0 reply depth (no replies)
     submission['comments'] = [];
     for (dirtyComment of comments) {

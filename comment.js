@@ -61,15 +61,11 @@ function loadCommentText(comment) {
     while (!fit) {
         let size = commentText.fontSize;
         if (Math.round(commentText.height) > 653) {
-            // console.log(`Text height is now ${commentText.height}`);
-            // console.log(`Font size is now ${size}`);
             commentText.set({
                 fontSize: size - 1
             });
         }
         else {
-            // console.log(`Text height is now ${commentText.height}`);
-            // console.log('This worked', size);
             fit = true;
         }
     }
