@@ -4,16 +4,19 @@ const fetchData = require('./reddit');
 const renderPost = require('./post');
 const renderComment = require('./comment');
 const tweet = require('./tweet');
+const fs = require('fs');
 
 async function rslashbot() {
     // Get data from reddit
     const data = await fetchData();
 
-    // Render posts and comments and get the ids of the comments
+    // // Render posts and comments and get the ids of the comments
     const ids = await render(data);
 
-    // Tweet images
-    const l = await tweet(ids);
+    // // Tweet images
+    await tweet(ids);
+
+    await clean();
 }
 
 async function render(data) {
@@ -30,6 +33,20 @@ async function render(data) {
     }
 
     return ids;
+}
+
+async function clean() {
+    await new Promise((resolve, reject) => {
+        fs.rmdir('output', { recursive: true, force: true }, () => {
+            resolve();
+        });
+    });
+    await new Promise((resolve, reject) => {
+        fs.mkdir('output', () => {
+            resolve();
+        });
+    });
+    return null;
 }
 
 rslashbot();
