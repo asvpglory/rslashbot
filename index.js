@@ -16,10 +16,10 @@ async function rslashbot() {
     const l = await tweet(ids);
 }
 
-function render(data) {
+async function render(data) {
     let ids = [];
 
-    renderPost(data.subreddit, data.subredditIcon, data.author, data.created, data.title, data.score, data.commentCount, postActions);
+    await renderPost(data.subreddit, data.subredditIcon, data.author, data.created, data.title, data.score, data.commentCount, postActions);
 
     for (comment of data.comments) {
         const id = generateUniqueId({

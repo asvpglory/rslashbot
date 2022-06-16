@@ -2,34 +2,37 @@ const fs = require('fs');
 const { lightSilver, eerieBlack, oldSilver } = require('./palette');
 fabric = require('fabric').fabric;
 
-module.exports = (subredditName, subredditIcon, postAuthor, postTimeago, postTitle, postScore, postCommentAmount, postActions) => {
+module.exports = async (subredditName, subredditIcon, postAuthor, postTimeago, postTitle, postScore, postCommentAmount, postActions) => {
     loadFonts();
     const title = loadPostTitle(postTitle);
 
     // Rendering main content
     const canvas = renderCanvas(title.height);
-    renderSubredditIcon(canvas, subredditIcon);
+    await renderSubredditIcon(canvas, subredditIcon);
     renderSubredditName(canvas, subredditName);
     renderPostTitle(canvas, title);
     const postAuthorTextWidth = renderPostAuthor(canvas, postAuthor);
     renderPostTimeago(canvas, postAuthorTextWidth, postTimeago);
 
     // Rendering bottom row
-    renderPostUpvoteIcon(canvas);
+    await renderPostUpvoteIcon(canvas);
     const scoreWidth = renderPostScore(canvas, postScore);
-    renderPostDownvoteIcon(canvas, scoreWidth);
-    renderPostCommentIcon(canvas, scoreWidth);
+    await renderPostDownvoteIcon(canvas, scoreWidth);
+    await renderPostCommentIcon(canvas, scoreWidth);
     renderCommentAmount(canvas, scoreWidth, postCommentAmount);
     renderPostActions(canvas, scoreWidth, postActions);
 };
 
-function write(canvas, object) {
+async function write(canvas, object) {
     canvas.add(object);
     canvas.renderAll();
     out = fs.createWriteStream(__dirname + `/output/submission.png`);
     const stream = canvas.createPNGStream();
-    stream.on('data', function (chunk) {
-        out.write(chunk);
+    await new Promise((resolve, reject) => {
+        stream.on('data', function (chunk) {
+            out.write(chunk);
+            resolve();
+        });
     });
     return null;
 }
@@ -83,17 +86,18 @@ function renderCanvas() {
     return canvas;
 }
 
-function renderSubredditIcon(canvas, subredditIcon) {
-    queueMicrotask(() => {
+async function renderSubredditIcon(canvas, subredditIcon) {
+    await new Promise((resolve, reject) => {
         const src = subredditIcon;
-        fabric.util.loadImage('file://' + __dirname + '/resources/askreddit.png', function (img) {
+        fabric.util.loadImage('file://' + __dirname + '/resources/askreddit.png', async function (img) {
             const subredditIcon = new fabric.Image(img);
             subredditIcon.set({
                 top: 40,
                 left: 40,
             });
             subredditIcon.scale(0.7);
-            write(canvas, subredditIcon);
+            await write(canvas, subredditIcon);
+            resolve();
         });
     });
     return null;
@@ -143,17 +147,18 @@ function renderPostTimeago(canvas, offset, postTimeago) {
     return null;
 }
 
-function renderPostUpvoteIcon(canvas) {
-    queueMicrotask(() => {
+async function renderPostUpvoteIcon(canvas) {
+    await new Promise((resolve, reject) => {
         const src = 'file://' + __dirname + '/resources/upvote.png';
-        fabric.util.loadImage(src, function (img) {
+        fabric.util.loadImage(src, async function (img) {
             const postUpvoteIcon = new fabric.Image(img);
             postUpvoteIcon.set({
                 top: 895,
                 left: 77,
             });
             postUpvoteIcon.scale(0.1);
-            write(canvas, postUpvoteIcon);
+            await write(canvas, postUpvoteIcon);
+            resolve();
         });
     });
     return null;
@@ -172,10 +177,10 @@ function renderPostScore(canvas, postScore) {
     return text.width;
 }
 
-function renderPostDownvoteIcon(canvas, postScoreWidth) {
-    queueMicrotask(() => {
+async function renderPostDownvoteIcon(canvas, postScoreWidth) {
+    await new Promise((resolve, reject) => {
         const src = 'file://' + __dirname + '/resources/upvote.png';
-        fabric.util.loadImage(src, function (img) {
+        fabric.util.loadImage(src, async function (img) {
             const postDownvoteIcon = new fabric.Image(img);
             postDownvoteIcon.set({
                 top: 895,
@@ -183,22 +188,24 @@ function renderPostDownvoteIcon(canvas, postScoreWidth) {
             });
             postDownvoteIcon.scale(0.1);
             postDownvoteIcon.rotate(180);
-            write(canvas, postDownvoteIcon);
+            await write(canvas, postDownvoteIcon);
+            resolve();
         });
     });
     return null;
 }
 
-function renderPostCommentIcon(canvas, postScoreWidth) {
-    queueMicrotask(() => {
+async function renderPostCommentIcon(canvas, postScoreWidth) {
+    await new Promise((resolve, reject) => {
         const src = 'file://' + __dirname + '/resources/commenticon.png';
-        fabric.util.loadImage(src, function (img) {
+        fabric.util.loadImage(src, async function (img) {
             const postCommentIcon = new fabric.Image(img);
             postCommentIcon.set({
                 top: 885,
                 left: postScoreWidth + 325,
             });
-            write(canvas, postCommentIcon);
+            await write(canvas, postCommentIcon);
+            resolve();
         });
     });
     return null;
