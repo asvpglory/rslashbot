@@ -61,8 +61,8 @@ async function fetchToken() {
             grant_type: 'client_credentials',
         }),
         auth: {
-            username: 'znCfedA56yd_g1tT9i9wwA',
-            password: 'pBRZySLKL7NeK1lt4CuiXStaVYCrgA'
+            username: process.env.REDDIT_CLIENT_ID,
+            password: process.env.REDDIT_CLIENT_SECRET
         }
     });
     return response.data.access_token;
