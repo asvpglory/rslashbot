@@ -17,7 +17,7 @@ module.exports = async (ids) => {
         ]);
 
         // Tweet post title image
-        const createdTweet = await client.v1.tweet("A", { media_ids: mediaId });
+        const createdTweet = await client.v1.tweet("", { media_ids: mediaId });
 
         // Upload comments
         const mediaIds = await Promise.all([
@@ -29,7 +29,7 @@ module.exports = async (ids) => {
 
         // Tweet comments in reply to title image
         await client.v1.reply(
-            'reply to previously created tweet.',
+            '',
             createdTweet.id_str, { media_ids: mediaIds }
         );
 

@@ -8,13 +8,19 @@ const fs = require('fs');
 
 async function rslashbot() {
     // Get data from reddit
+    console.log("Fetching data...");
     const data = await fetchData();
+    console.log("Data feteched");
 
     // // Render posts and comments and get the ids of the comments
+    console.log("Rendering images...");
     const ids = await render(data);
+    console.log("Images rendered.");
 
     // // Tweet images
+    console.log("Tweeting images...");
     await tweet(ids);
+    console.log("Images tweeted.");
 
     await clean();
 }
