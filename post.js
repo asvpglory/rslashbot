@@ -3,24 +3,28 @@ const { lightSilver, eerieBlack, oldSilver } = require('./palette');
 fabric = require('fabric').fabric;
 
 module.exports = async (subredditName, subredditIcon, postAuthor, postTimeago, postTitle, postScore, postCommentAmount, postActions) => {
-    loadFonts();
-    const title = loadPostTitle(postTitle);
+    try {
+        loadFonts();
+        const title = loadPostTitle(postTitle);
 
-    // Rendering main content
-    const canvas = renderCanvas(title.height);
-    await renderSubredditIcon(canvas, subredditIcon);
-    renderSubredditName(canvas, subredditName);
-    renderPostTitle(canvas, title);
-    const postAuthorTextWidth = renderPostAuthor(canvas, postAuthor);
-    renderPostTimeago(canvas, postAuthorTextWidth, postTimeago);
+        // Rendering main content
+        const canvas = renderCanvas(title.height);
+        await renderSubredditIcon(canvas, subredditIcon);
+        renderSubredditName(canvas, subredditName);
+        renderPostTitle(canvas, title);
+        const postAuthorTextWidth = renderPostAuthor(canvas, postAuthor);
+        renderPostTimeago(canvas, postAuthorTextWidth, postTimeago);
 
-    // Rendering bottom row
-    await renderPostUpvoteIcon(canvas);
-    const scoreWidth = renderPostScore(canvas, postScore);
-    await renderPostDownvoteIcon(canvas, scoreWidth);
-    await renderPostCommentIcon(canvas, scoreWidth);
-    renderCommentAmount(canvas, scoreWidth, postCommentAmount);
-    renderPostActions(canvas, scoreWidth, postActions);
+        // Rendering bottom row
+        await renderPostUpvoteIcon(canvas);
+        const scoreWidth = renderPostScore(canvas, postScore);
+        await renderPostDownvoteIcon(canvas, scoreWidth);
+        await renderPostCommentIcon(canvas, scoreWidth);
+        renderCommentAmount(canvas, scoreWidth, postCommentAmount);
+        renderPostActions(canvas, scoreWidth, postActions);
+    } catch (err) {
+        console.log(err);
+    }
 };
 
 async function write(canvas, object) {

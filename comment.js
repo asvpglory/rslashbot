@@ -3,22 +3,26 @@ const { lightSilver, eerieBlack, oldSilver, jet } = require('./palette');
 fabric = require('fabric').fabric;
 
 module.exports = (commentAuthor, commentTimeago, commentText, commentScore, commentActions, commentId) => {
-    loadFonts();
-    const text = loadCommentText(commentText);
-    const canvas = renderCanvas();
+    try {
+        loadFonts();
+        const text = loadCommentText(commentText);
+        const canvas = renderCanvas();
 
-    // Rendering main content
-    renderCommentAvatar(canvas, commentId);
-    renderCommentText(canvas, text, commentId);
-    renderTrail(canvas, text.height, commentId);
-    const commentAuthorTextWidth = renderCommentAuthor(canvas, commentAuthor, commentId);
-    renderCommentTimeago(canvas, commentAuthorTextWidth, commentTimeago, commentId);
+        // Rendering main content
+        renderCommentAvatar(canvas, commentId);
+        renderCommentText(canvas, text, commentId);
+        renderTrail(canvas, text.height, commentId);
+        const commentAuthorTextWidth = renderCommentAuthor(canvas, commentAuthor, commentId);
+        renderCommentTimeago(canvas, commentAuthorTextWidth, commentTimeago, commentId);
 
-    // Rendering bottom row
-    renderCommentUpvoteIcon(canvas, commentId);
-    const scoreWidth = renderCommentScore(canvas, commentScore, commentId);
-    renderCommentDownvoteIcon(canvas, scoreWidth, commentId);
-    renderCommentActions(canvas, scoreWidth, commentActions, commentId);
+        // Rendering bottom row
+        renderCommentUpvoteIcon(canvas, commentId);
+        const scoreWidth = renderCommentScore(canvas, commentScore, commentId);
+        renderCommentDownvoteIcon(canvas, scoreWidth, commentId);
+        renderCommentActions(canvas, scoreWidth, commentActions, commentId);
+    } catch (err) {
+        console.log(err);
+    }
 };
 
 function write(canvas, object, commentId) {

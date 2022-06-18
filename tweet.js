@@ -10,7 +10,6 @@ const client = new TwitterApi({
 
 module.exports = async (ids) => {
     try {
-
         // Upload post title image
         const mediaId = await Promise.all([
             client.v1.uploadMedia('output/submission.png'),
