@@ -92,17 +92,22 @@ function renderCanvas() {
 
 async function renderSubredditIcon(canvas, subredditIcon) {
     await new Promise((resolve, reject) => {
-        const src = subredditIcon;
-        fabric.util.loadImage('file://' + __dirname + '/resources/askreddit.png', async function (img) {
-            const subredditIcon = new fabric.Image(img);
-            subredditIcon.set({
-                top: 40,
-                left: 40,
+        try {
+            const src = subredditIcon;
+            fabric.util.loadImage('file://' + __dirname + '/resources/askreddit.png', async function (img) {
+                const subredditIcon = new fabric.Image(img);
+                subredditIcon.set({
+                    top: 40,
+                    left: 40,
+                });
+                subredditIcon.scale(0.7);
+                await write(canvas, subredditIcon);
+                resolve();
             });
-            subredditIcon.scale(0.7);
-            await write(canvas, subredditIcon);
-            resolve();
-        });
+        } catch (error) {
+            reject(error);
+        }
+
     });
     return null;
 }
@@ -153,17 +158,22 @@ function renderPostTimeago(canvas, offset, postTimeago) {
 
 async function renderPostUpvoteIcon(canvas) {
     await new Promise((resolve, reject) => {
-        const src = 'file://' + __dirname + '/resources/upvote.png';
-        fabric.util.loadImage(src, async function (img) {
-            const postUpvoteIcon = new fabric.Image(img);
-            postUpvoteIcon.set({
-                top: 895,
-                left: 77,
+        try {
+            const src = 'file://' + __dirname + '/resources/upvote.png';
+            fabric.util.loadImage(src, async function (img) {
+                const postUpvoteIcon = new fabric.Image(img);
+                postUpvoteIcon.set({
+                    top: 895,
+                    left: 77,
+                });
+                postUpvoteIcon.scale(0.1);
+                await write(canvas, postUpvoteIcon);
+                resolve();
             });
-            postUpvoteIcon.scale(0.1);
-            await write(canvas, postUpvoteIcon);
-            resolve();
-        });
+        } catch (error) {
+            reject(error);
+        }
+
     });
     return null;
 }
@@ -183,34 +193,42 @@ function renderPostScore(canvas, postScore) {
 
 async function renderPostDownvoteIcon(canvas, postScoreWidth) {
     await new Promise((resolve, reject) => {
-        const src = 'file://' + __dirname + '/resources/upvote.png';
-        fabric.util.loadImage(src, async function (img) {
-            const postDownvoteIcon = new fabric.Image(img);
-            postDownvoteIcon.set({
-                top: 895,
-                left: postScoreWidth + 190,
+        try {
+            const src = 'file://' + __dirname + '/resources/upvote.png';
+            fabric.util.loadImage(src, async function (img) {
+                const postDownvoteIcon = new fabric.Image(img);
+                postDownvoteIcon.set({
+                    top: 895,
+                    left: postScoreWidth + 190,
+                });
+                postDownvoteIcon.scale(0.1);
+                postDownvoteIcon.rotate(180);
+                await write(canvas, postDownvoteIcon);
+                resolve();
             });
-            postDownvoteIcon.scale(0.1);
-            postDownvoteIcon.rotate(180);
-            await write(canvas, postDownvoteIcon);
-            resolve();
-        });
+        } catch (error) {
+            reject(error);
+        }
     });
     return null;
 }
 
 async function renderPostCommentIcon(canvas, postScoreWidth) {
     await new Promise((resolve, reject) => {
-        const src = 'file://' + __dirname + '/resources/commenticon.png';
-        fabric.util.loadImage(src, async function (img) {
-            const postCommentIcon = new fabric.Image(img);
-            postCommentIcon.set({
-                top: 885,
-                left: postScoreWidth + 325,
+        try {
+            const src = 'file://' + __dirname + '/resources/commenticon.png';
+            fabric.util.loadImage(src, async function (img) {
+                const postCommentIcon = new fabric.Image(img);
+                postCommentIcon.set({
+                    top: 885,
+                    left: postScoreWidth + 325,
+                });
+                await write(canvas, postCommentIcon);
+                resolve();
             });
-            await write(canvas, postCommentIcon);
-            resolve();
-        });
+        } catch (error) {
+            reject(error);
+        }
     });
     return null;
 }

@@ -48,14 +48,24 @@ async function render(data) {
 
 async function clean() {
     await new Promise((resolve, reject) => {
-        fs.rmdir('output', { recursive: true, force: true }, () => {
-            resolve();
-        });
+        try {
+            fs.rmdir('output', { recursive: true, force: true }, () => {
+                resolve();
+            });
+        } catch (error) {
+            reject(error);
+        }
+
     });
     await new Promise((resolve, reject) => {
-        fs.mkdir('output', () => {
-            resolve();
-        });
+        try {
+            fs.mkdir('output', () => {
+                resolve();
+            });
+        } catch (error) {
+            reject(error);
+        }
+
     });
     return null;
 }
