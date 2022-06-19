@@ -9,7 +9,7 @@ const fs = require('fs');
 async function rslashbot() {
     try {
         // Get data from reddit
-        console.log("Fetching data....");
+        console.log("Fetching data...");
         const data = await fetchData();
         console.log("Data feteched");
 
