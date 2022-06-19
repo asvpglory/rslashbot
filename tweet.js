@@ -4,8 +4,8 @@ require('dotenv').config();
 const client = new TwitterApi({
     appKey: process.env.TWITTER_API_KEY,
     appSecret: process.env.TWITTER_API_KEY_SECRET,
-    accessToken: process.env.LYRICK_ACCESS,
-    accessSecret: process.env.LYRICK_SECRET
+    accessToken: process.env.TOKEN,
+    accessSecret: process.env.SECRET
 });
 
 module.exports = async (ids) => {
