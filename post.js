@@ -20,8 +20,8 @@ module.exports = async (subredditName, subredditIcon, postAuthor, postTimeago, p
         const scoreWidth = renderPostScore(canvas, postScore);
         await renderPostDownvoteIcon(canvas, scoreWidth);
         await renderPostCommentIcon(canvas, scoreWidth);
-        renderCommentAmount(canvas, scoreWidth, postCommentAmount);
-        renderPostActions(canvas, scoreWidth, postActions);
+        await renderCommentAmount(canvas, scoreWidth, postCommentAmount);
+        await renderPostActions(canvas, scoreWidth, postActions);
     } catch (err) {
         console.log(err);
     }
@@ -233,7 +233,7 @@ async function renderPostCommentIcon(canvas, postScoreWidth) {
     return null;
 }
 
-function renderCommentAmount(canvas, postScoreWidth, commentAmount) {
+async function renderCommentAmount(canvas, postScoreWidth, commentAmount) {
     const commentAmountText = new fabric.Text(commentAmount, {
         top: 915,
         left: postScoreWidth + 450,
@@ -242,11 +242,11 @@ function renderCommentAmount(canvas, postScoreWidth, commentAmount) {
         fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });
-    write(canvas, commentAmountText);
+    await write(canvas, commentAmountText);
     return null;
 }
 
-function renderPostActions(canvas, postScoreWidth, commentActions) {
+async function renderPostActions(canvas, postScoreWidth, commentActions) {
     const postActionsText = new fabric.Text(commentActions, {
         top: 915,
         left: postScoreWidth + 700,
@@ -255,6 +255,6 @@ function renderPostActions(canvas, postScoreWidth, commentActions) {
         fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });
-    write(canvas, postActionsText);
+    await write(canvas, postActionsText);
     return null;
 }

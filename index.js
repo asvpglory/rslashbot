@@ -55,7 +55,6 @@ async function clean() {
         } catch (error) {
             reject(error);
         }
-
     });
     await new Promise((resolve, reject) => {
         try {
