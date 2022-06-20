@@ -20,7 +20,7 @@ async function rslashbot() {
 
         // // Tweet images
         console.log("Tweeting images...");
-        await tweet(ids);
+        await tweet(ids, data.link);
         console.log("Images tweeted.");
 
         await clean();
