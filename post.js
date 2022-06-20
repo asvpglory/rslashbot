@@ -10,14 +10,14 @@ module.exports = async (subredditName, subredditIcon, postAuthor, postTimeago, p
         // Rendering main content
         const canvas = renderCanvas(title.height);
         await renderSubredditIcon(canvas, subredditIcon);
-        renderSubredditName(canvas, subredditName);
-        renderPostTitle(canvas, title);
-        const postAuthorTextWidth = renderPostAuthor(canvas, postAuthor);
-        renderPostTimeago(canvas, postAuthorTextWidth, postTimeago);
+        await renderSubredditName(canvas, subredditName);
+        await renderPostTitle(canvas, title);
+        const postAuthorTextWidth = await renderPostAuthor(canvas, postAuthor);
+        await renderPostTimeago(canvas, postAuthorTextWidth, postTimeago);
 
         // Rendering bottom row
         await renderPostUpvoteIcon(canvas);
-        const scoreWidth = renderPostScore(canvas, postScore);
+        const scoreWidth = await renderPostScore(canvas, postScore);
         await renderPostDownvoteIcon(canvas, scoreWidth);
         await renderPostCommentIcon(canvas, scoreWidth);
         await renderCommentAmount(canvas, scoreWidth, postCommentAmount);
@@ -112,12 +112,12 @@ async function renderSubredditIcon(canvas, subredditIcon) {
     return null;
 }
 
-function renderPostTitle(canvas, postTitleText) {
-    write(canvas, postTitleText);
+async function renderPostTitle(canvas, postTitleText) {
+    await write(canvas, postTitleText);
     return null;
 }
 
-function renderPostAuthor(canvas, postAuthor) {
+async function renderPostAuthor(canvas, postAuthor) {
     const postAuthorText = new fabric.Text(postAuthor, {
         top: 130,
         left: 240,
@@ -126,11 +126,11 @@ function renderPostAuthor(canvas, postAuthor) {
         fontFamily: "IBM Plex Sans",
         fontWeight: "SemiBold"
     });
-    write(canvas, postAuthorText);
+    await write(canvas, postAuthorText);
     return postAuthorText.width;
 }
 
-function renderSubredditName(canvas, subredditName) {
+async function renderSubredditName(canvas, subredditName) {
     const subredditNameText = new fabric.Text(subredditName, {
         top: 60,
         left: 240,
@@ -139,11 +139,11 @@ function renderSubredditName(canvas, subredditName) {
         fontFamily: "IBM Plex Sans",
         fontWeight: "SemiBold"
     });
-    write(canvas, subredditNameText);
+    await write(canvas, subredditNameText);
     return null;
 }
 
-function renderPostTimeago(canvas, offset, postTimeago) {
+async function renderPostTimeago(canvas, offset, postTimeago) {
     const postTimeagoText = new fabric.Text(postTimeago, {
         top: 140,
         left: offset + 250,
@@ -152,7 +152,7 @@ function renderPostTimeago(canvas, offset, postTimeago) {
         fontFamily: "Noto Sans",
         fontWeight: "Medium"
     });
-    write(canvas, postTimeagoText);
+    await write(canvas, postTimeagoText);
     return null;
 }
 
@@ -178,7 +178,7 @@ async function renderPostUpvoteIcon(canvas) {
     return null;
 }
 
-function renderPostScore(canvas, postScore) {
+async function renderPostScore(canvas, postScore) {
     const text = new fabric.Text(postScore, {
         top: 915,
         left: 180,
@@ -187,7 +187,7 @@ function renderPostScore(canvas, postScore) {
         fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });
-    write(canvas, text);
+    await write(canvas, text);
     return text.width;
 }
 
