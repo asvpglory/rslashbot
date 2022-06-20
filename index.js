@@ -12,9 +12,9 @@ const tweet = require('./tweet');
 async function rslashbot() {
     try {
         // Get data from reddit
-        // console.log("Fetching data...");
-        // const data = await fetchData();
-        // console.log("Data fetched");
+        console.log("Fetching data...");
+        const data = await fetchData();
+        console.log("Data fetched");
 
         // console.log(data);
         // // Render posts and comments and get the ids of the comments
@@ -23,11 +23,11 @@ async function rslashbot() {
         console.log("Images rendered.");
 
         // // Tweet images
-        // console.log("Tweeting images...");
-        // await tweet(ids, data.link);
-        // console.log("Images tweeted.");
+        console.log("Tweeting images...");
+        await tweet(ids, data.link);
+        console.log("Images tweeted.");
 
-        // await clean();
+        await clean();
     }
     catch (err) {
         console.log(err);
