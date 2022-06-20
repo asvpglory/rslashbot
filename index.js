@@ -49,7 +49,7 @@ async function render(data) {
 async function clean() {
     await new Promise((resolve, reject) => {
         try {
-            fs.rmdir('output', { recursive: true, force: true }, () => {
+            fs.rm('output', { recursive: true, force: true }, () => {
                 resolve();
             });
         } catch (error) {
