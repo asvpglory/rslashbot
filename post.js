@@ -2,7 +2,7 @@ const fs = require('fs');
 const { lightSilver, eerieBlack, oldSilver } = require('./palette');
 fabric = require('fabric').fabric;
 
-module.exports = async (subredditName, subredditIcon, postAuthor, postTimeago, postTitle, postScore, postCommentAmount, postActions) => {
+module.exports = async (subredditName, subredditIcon, postAuthor, postTimeago, postTitle, postScore, postCommentAmount) => {
     try {
         loadFonts();
         const title = loadPostTitle(postTitle);
@@ -21,7 +21,7 @@ module.exports = async (subredditName, subredditIcon, postAuthor, postTimeago, p
         await renderPostDownvoteIcon(canvas, scoreWidth);
         await renderPostCommentIcon(canvas, scoreWidth);
         await renderCommentAmount(canvas, scoreWidth, postCommentAmount);
-        await renderPostActions(canvas, scoreWidth, postActions);
+        await renderPostActions(canvas, scoreWidth);
     } catch (err) {
         console.log(err);
     }
@@ -246,8 +246,8 @@ async function renderCommentAmount(canvas, postScoreWidth, commentAmount) {
     return null;
 }
 
-async function renderPostActions(canvas, postScoreWidth, commentActions) {
-    const postActionsText = new fabric.Text(commentActions, {
+async function renderPostActions(canvas, postScoreWidth) {
+    const postActionsText = new fabric.Text("@rslashbot v1.0.0", {
         top: 915,
         left: postScoreWidth + 700,
         fill: oldSilver,

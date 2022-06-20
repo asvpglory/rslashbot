@@ -2,7 +2,7 @@ const fs = require('fs');
 const { lightSilver, eerieBlack, oldSilver, jet } = require('./palette');
 fabric = require('fabric').fabric;
 
-module.exports = (commentAuthor, commentTimeago, commentText, commentScore, commentActions, commentId) => {
+module.exports = (commentAuthor, commentTimeago, commentText, commentScore, commentId) => {
     try {
         loadFonts();
         const text = loadCommentText(commentText);
@@ -19,7 +19,7 @@ module.exports = (commentAuthor, commentTimeago, commentText, commentScore, comm
         renderCommentUpvoteIcon(canvas, commentId);
         const scoreWidth = renderCommentScore(canvas, commentScore, commentId);
         renderCommentDownvoteIcon(canvas, scoreWidth, commentId);
-        renderCommentActions(canvas, scoreWidth, commentActions, commentId);
+        renderCommentActions(canvas, scoreWidth, commentId);
     } catch (err) {
         console.log(err);
     }
@@ -185,15 +185,18 @@ function renderCommentDownvoteIcon(canvas, scoreWidth, commentId) {
     return null;
 }
 
-function renderCommentActions(canvas, scoreWidth, commentActions, commentId) {
-    const commentActionsText = new fabric.Text(commentActions, {
-        top: 950,
-        left: scoreWidth + 370,
-        fill: oldSilver,
-        fontSize: 40,
-        fontFamily: "IBM Plex Sans",
-        fontWeight: "Bold"
-    });
+function renderCommentActions(canvas, scoreWidth, commentId) {
+    const commentActionsText = new fabric.Text(
+        "Reply    Give Award    Share    Report    Save    Follow    @rslashbot v1.0.0",
+        {
+            top: 950,
+            left: scoreWidth + 370,
+            fill: oldSilver,
+            fontSize: 40,
+            fontFamily: "IBM Plex Sans",
+            fontWeight: "Bold"
+        }
+    );
     write(canvas, commentActionsText, commentId);
     return null;
 }
