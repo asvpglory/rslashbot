@@ -4,9 +4,9 @@ module.exports = {
     subreddit: 'r/AskReddit',
     score: '51.5k',
     author: 'u/Diligent-Log6805',
-    commentCount: '30.7k',
+    numComments: '30.7k',
     created: '∙ 21 hours ago',
-    link: 'https://www.reddit.com/r/AskReddit/comments/vfq7z9/whats_a_modern_day_scam_thats_become_normalized/',
+    url: 'https://www.reddit.com/r/AskReddit/comments/vfq7z9/whats_a_modern_day_scam_thats_become_normalized/',
     subredditIcon: 'https://styles.redditmedia.com/t5_2qh1i/styles/communityIcon_tijjpyw1qe201.png?width=256&s=4e76eadc662b8155a93d4d7487a6d3acb35f4334',
     comments: [
         {
@@ -19,7 +19,7 @@ module.exports = {
         {
             author: 'Hardi_SMH',
             authorIcon: 'https://styles.redditmedia.com/t5_cl231/styles/profileIcon_snoob4c76e22-129d-47c4-ac1b-cc888a584bc5-headshot-f.png?width=256&height=256&crop=256:256,smart&s=9a61fcffd71d8eb651c5fd49eeff13bf13ddcb93',
-            body: 'Not being able to cancel a subscription online. I can subscribe in 5 minutes but I need to call your service agents and am forced to be rude to them to cancel it because as long as my voice sounds friendly they try to resell the damn subscription.',
+            body: 'At first its not bad. But eventually Mentality changes. Some people get caught in that thought process of being homeless. Once you hit that point its really hard to climb out. I’ve been homeless twice. The first time I was about 20 yo. My parents moved into my based on income housing. The rent went up and my Mom is mentally ill so she stopped paying rent. I had to throw everything away. All my worldly things gone. I still remember giving away my favorite thing at that time which was a beautiful picture of comet Hale Bopp. Broke my heart. I slept in a van in the winter and cried every night. Almost broke me. I thought it wouldn’t ever happen again then fast forward many many years later and my wife kicked me out of the house. I’ve never been so close the edge of losing it. She tried to take my kids away too. I lost everything again but have been building myself from scratch. Remember to kind to the homeless. You don’t know their situation. You don’t have to give them money but you should be kind. Life is hard enough without someone being a jerk to someone down on their luck.',
             score: '43.8k',
             created: '∙ 18 hours ago'
         },
