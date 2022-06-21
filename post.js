@@ -2,7 +2,7 @@ const fs = require('fs');
 const { lightSilver, eerieBlack, oldSilver } = require('./palette');
 fabric = require('fabric').fabric;
 
-module.exports = async (subredditName, subredditIcon, postAuthor, postTimeago, postTitle, postScore, postCommentAmount) => {
+module.exports = async (subredditName, subredditIcon, postAuthor, postCreated, postTitle, postScore, postNumComments) => {
     try {
         loadFonts();
         const title = loadPostTitle(postTitle);
@@ -13,14 +13,14 @@ module.exports = async (subredditName, subredditIcon, postAuthor, postTimeago, p
         await renderSubredditName(canvas, subredditName);
         await renderPostTitle(canvas, title);
         const postAuthorTextWidth = await renderPostAuthor(canvas, postAuthor);
-        await renderPostTimeago(canvas, postAuthorTextWidth, postTimeago);
+        await renderPostCreated(canvas, postAuthorTextWidth, postCreated);
 
         // Rendering bottom row
         await renderPostUpvoteIcon(canvas);
         const scoreWidth = await renderPostScore(canvas, postScore);
         await renderPostDownvoteIcon(canvas, scoreWidth);
         await renderPostCommentIcon(canvas, scoreWidth);
-        await renderCommentAmount(canvas, scoreWidth, postCommentAmount);
+        await renderNumComments(canvas, scoreWidth, postNumComments);
         await renderPostActions(canvas, scoreWidth);
     } catch (err) {
         console.log(err);
@@ -143,8 +143,8 @@ async function renderSubredditName(canvas, subredditName) {
     return null;
 }
 
-async function renderPostTimeago(canvas, offset, postTimeago) {
-    const postTimeagoText = new fabric.Text(postTimeago, {
+async function renderPostCreated(canvas, offset, postCreated) {
+    const postCreatedText = new fabric.Text(postCreated, {
         top: 140,
         left: offset + 250,
         fill: oldSilver,
@@ -152,7 +152,7 @@ async function renderPostTimeago(canvas, offset, postTimeago) {
         fontFamily: "Noto Sans",
         fontWeight: "Medium"
     });
-    await write(canvas, postTimeagoText);
+    await write(canvas, postCreatedText);
     return null;
 }
 
@@ -233,8 +233,8 @@ async function renderPostCommentIcon(canvas, postScoreWidth) {
     return null;
 }
 
-async function renderCommentAmount(canvas, postScoreWidth, commentAmount) {
-    const commentAmountText = new fabric.Text(commentAmount, {
+async function renderNumComments(canvas, postScoreWidth, numComments) {
+    const numCommentsText = new fabric.Text(numComments, {
         top: 915,
         left: postScoreWidth + 450,
         fill: oldSilver,
@@ -242,7 +242,7 @@ async function renderCommentAmount(canvas, postScoreWidth, commentAmount) {
         fontFamily: "IBM Plex Sans",
         fontWeight: "Bold"
     });
-    await write(canvas, commentAmountText);
+    await write(canvas, numCommentsText);
     return null;
 }
 

@@ -2,7 +2,7 @@ const fs = require('fs');
 const { lightSilver, eerieBlack, oldSilver, jet } = require('./palette');
 fabric = require('fabric').fabric;
 
-module.exports = (commentAuthor, commentTimeago, commentText, commentScore, commentId) => {
+module.exports = (commentAuthor, commentCreated, commentText, commentScore, commentId) => {
     try {
         loadFonts();
         const text = loadCommentText(commentText);
@@ -13,7 +13,7 @@ module.exports = (commentAuthor, commentTimeago, commentText, commentScore, comm
         renderCommentText(canvas, text, commentId);
         renderTrail(canvas, text.height, commentId);
         const commentAuthorTextWidth = renderCommentAuthor(canvas, commentAuthor, commentId);
-        renderCommentTimeago(canvas, commentAuthorTextWidth, commentTimeago, commentId);
+        renderCommentCreated(canvas, commentAuthorTextWidth, commentCreated, commentId);
 
         // Rendering bottom row
         renderCommentUpvoteIcon(canvas, commentId);
@@ -113,8 +113,8 @@ function renderCommentAuthor(canvas, author, commentId) {
     return commentAuthorText.width;
 }
 
-function renderCommentTimeago(canvas, offset, timeago, commentId) {
-    const commentTimeagoText = new fabric.Text(timeago, {
+function renderCommentCreated(canvas, offset, created, commentId) {
+    const commentCreatedText = new fabric.Text(created, {
         top: 102,
         left: offset + 250,
         fill: oldSilver,
@@ -122,7 +122,7 @@ function renderCommentTimeago(canvas, offset, timeago, commentId) {
         fontFamily: "Noto Sans",
         fontWeight: "Medium"
     });
-    write(canvas, commentTimeagoText, commentId);
+    write(canvas, commentCreatedText, commentId);
     return null;
 }
 

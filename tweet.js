@@ -8,7 +8,7 @@ const client = new TwitterApi({
     accessSecret: process.env.SECRET
 });
 
-module.exports = async (ids, link) => {
+module.exports = async (ids, url) => {
     try {
         // Upload post title image
         const mediaId = await Promise.all([
@@ -27,7 +27,7 @@ module.exports = async (ids, link) => {
         ]);
 
         // Tweet comments in reply to title image
-        await client.v1.reply(link, createdTweet.id_str, { media_ids: mediaIds });
+        await client.v1.reply(url, createdTweet.id_str, { media_ids: mediaIds });
 
         return createdTweet;
 
