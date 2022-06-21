@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Post = require('./model');
 
 module.exports.createPost = async (post, id) => {
-    await mongoose.connect('mongodb://localhost:27017/test');
+    await mongoose.connect('mongodb://localhost:27017/rslashbot');
     const db = mongoose.connection;
     db.on("error", console.error.bind(console, "connection error:"));
     // db.once("open", () => {
@@ -55,7 +55,7 @@ module.exports.createPost = async (post, id) => {
 };
 
 module.exports.fetchPost = async () => {
-    await mongoose.connect('mongodb://localhost:27017/test');
+    await mongoose.connect('mongodb://localhost:27017/rslashbot');
     const db = mongoose.connection;
     db.on("error", console.error.bind(console, "connection error:"));
     const post = await Post.find({ _id: process.env.POST });
@@ -64,7 +64,7 @@ module.exports.fetchPost = async () => {
 };
 
 module.exports.cleanDatabase = async () => {
-    await mongoose.connect('mongodb://localhost:27017/test');
+    await mongoose.connect('mongodb://localhost:27017/rslashbot');
     const db = mongoose.connection;
     db.on("error", console.error.bind(console, "connection error:"));
     await Post.deleteMany({});
