@@ -1,10 +1,13 @@
-const { postActions, commentActions } = require('./dummy');
+// Node/npm modules
 const generateUniqueId = require('generate-unique-id');
+const fs = require('fs');
+
+// Local modules
+const data = require('./dummy');
 const fetchData = require('./reddit');
 const renderPost = require('./post');
 const renderComment = require('./comment');
 const tweet = require('./tweet');
-const fs = require('fs');
 
 async function rslashbot() {
     try {
@@ -13,6 +16,7 @@ async function rslashbot() {
         const data = await fetchData();
         console.log("Data fetched");
 
+        // console.log(data);
         // // Render posts and comments and get the ids of the comments
         console.log("Rendering images...");
         const ids = await render(data);
@@ -33,14 +37,14 @@ async function rslashbot() {
 async function render(data) {
     let ids = [];
 
-    await renderPost(data.subreddit, data.subredditIcon, data.author, data.created, data.title, data.score, data.commentCount, postActions);
+    await renderPost(data.subreddit, data.subredditIcon, data.author, data.created, data.title, data.score, data.commentCount);
 
     for (comment of data.comments) {
         const id = generateUniqueId({
             length: 5
         });
         ids.push(id);
-        renderComment(comment.author, comment.created, comment.body, comment.score, commentActions, id);
+        renderComment(comment.author, comment.created, comment.body, comment.score, id);
     }
 
     return ids;

@@ -79,6 +79,3 @@ function createClient(accessToken) {
     });
     return r;
 };
-
-// fetchData()
-    // .then((res) => console.log(res));

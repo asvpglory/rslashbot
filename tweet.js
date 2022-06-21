@@ -29,7 +29,6 @@ module.exports = async (ids, link) => {
         // Tweet comments in reply to title image
         await client.v1.reply(link, createdTweet.id_str, { media_ids: mediaIds });
 
-        // console.log('Tweet', createdTweet.id, ':', createdTweet.text);
         return createdTweet;
 
     } catch (error) {
